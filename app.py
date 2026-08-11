@@ -135,3 +135,13 @@ tk.Label(
     column=0,
     sticky="w"
 )
+
+status_combobox = ttk.Combobox(
+    form_frame,
+    values=[
+        "Active",
+        "On Leave",
+        "Resigned"
+    ],
+    width=27
+)
