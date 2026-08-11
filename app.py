@@ -41,6 +41,20 @@ table_frame = tk.LabelFrame(
     pady=10
 )
 
+table_frame.pack(
+    side="right",
+    fill="both",
+    expand=True
+)
+
+tk.Label(
+    form_frame,
+    text="Employee ID"
+).grid(
+    row=0,
+    column=0,
+    sticky="w"
+)
 
 
 
