@@ -106,3 +106,23 @@ department_entry.grid(
     column=0,
     pady=5
 )
+
+tk.Label(
+    form_frame,
+    text="Salary"
+).grid(
+    row=6,
+    column=0,
+    sticky="w"
+)
+
+salary_entry = tk.Entry(
+    form_frame,
+    width=30
+)
+
+salary_entry.grid(
+    row=7,
+    column=0,
+    pady=5
+)
