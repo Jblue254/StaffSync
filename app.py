@@ -22,6 +22,13 @@ main_frame.pack(fill="both", expand=True, padx=20, pady=10)
 form_frame = tk.LabelFrame(main_frame)
 table_frame = tk.LabelFrame(main_frame)
 
+form_frame = tk.LabelFrame(
+    main_frame,
+    text="Employee Information",
+    padx=10,
+    pady=10
+)
+
 
 
 
