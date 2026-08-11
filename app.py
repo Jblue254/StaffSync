@@ -164,3 +164,14 @@ add_button.grid(
     column=0,
     pady=10
 )
+update_button = tk.Button(
+    form_frame,
+    text="Update Employee",
+    width=25
+)
+
+update_button.grid(
+    row=11,
+    column=0,
+    pady=5
+)
