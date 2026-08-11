@@ -19,6 +19,8 @@ title_label.pack(pady=10)
 main_frame = tk.Frame(root)
 main_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
+form_frame = tk.LabelFrame(main_frame)
+table_frame = tk.LabelFrame(main_frame)
 
 
 
