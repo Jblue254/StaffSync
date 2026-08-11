@@ -56,5 +56,9 @@ tk.Label(
     sticky="w"
 )
 
+employee_id_entry = tk.Entry(
+    form_frame,
+    width=30
+)
 
 
