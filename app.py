@@ -29,6 +29,11 @@ form_frame = tk.LabelFrame(
     pady=10
 )
 
+form_frame.pack(
+    side="left",
+    fill="y"
+)
+
 
 
 
