@@ -67,3 +67,22 @@ employee_id_entry.grid(
     pady=5
 )
 
+tk.Label(
+    form_frame,
+    text="Full Name"
+).grid(
+    row=2,
+    column=0,
+    sticky="w"
+)
+
+name_entry = tk.Entry(
+    form_frame,
+    width=30
+)
+
+name_entry.grid(
+    row=3,
+    column=0,
+    pady=5
+)
