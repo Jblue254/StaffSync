@@ -126,3 +126,12 @@ salary_entry.grid(
     column=0,
     pady=5
 )
+
+tk.Label(
+    form_frame,
+    text="Status"
+).grid(
+    row=8,
+    column=0,
+    sticky="w"
+)
