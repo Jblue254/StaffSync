@@ -34,6 +34,13 @@ form_frame.pack(
     fill="y"
 )
 
+table_frame = tk.LabelFrame(
+    main_frame,
+    text="Employee Records",
+    padx=10,
+    pady=10
+)
+
 
 
 
