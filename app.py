@@ -145,3 +145,9 @@ status_combobox = ttk.Combobox(
     ],
     width=27
 )
+
+status_combobox.grid(
+    row=9,
+    column=0,
+    pady=5
+)
