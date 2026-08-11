@@ -61,4 +61,9 @@ employee_id_entry = tk.Entry(
     width=30
 )
 
+employee_id_entry.grid(
+    row=1,
+    column=0,
+    pady=5
+)
 
