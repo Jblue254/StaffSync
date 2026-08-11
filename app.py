@@ -14,6 +14,7 @@ title_label = tk.Label(
     text="EMPLOYEE MANAGEMENT SYSTEM",
     font=("Arial", 20, "bold")   
 )
+title_label.pack(pady=10)
 
 
 
