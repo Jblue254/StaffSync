@@ -151,3 +151,4 @@ status_combobox.grid(
     column=0,
     pady=5
 )
+status_combobox.current(0)
