@@ -86,3 +86,23 @@ name_entry.grid(
     column=0,
     pady=5
 )
+
+tk.Label(
+    form_frame,
+    text="Department"
+).grid(
+    row=4,
+    column=0,
+    sticky="w"
+)
+
+department_entry = tk.Entry(
+    form_frame,
+    width=30
+)
+
+department_entry.grid(
+    row=5,
+    column=0,
+    pady=5
+)
