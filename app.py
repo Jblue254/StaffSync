@@ -152,3 +152,15 @@ status_combobox.grid(
     pady=5
 )
 status_combobox.current(0)
+
+add_button = tk.Button(
+    form_frame,
+    text="Add Employee",
+    width=25
+)
+
+add_button.grid(
+    row=10,
+    column=0,
+    pady=10
+)
