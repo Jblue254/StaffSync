@@ -175,3 +175,14 @@ update_button.grid(
     column=0,
     pady=5
 )
+delete_button = tk.Button(
+    form_frame,
+    text="Delete Employee",
+    width=25
+)
+
+delete_button.grid(
+    row=12,
+    column=0,
+    pady=5
+)
