@@ -9,6 +9,11 @@ root.geometry("1200x700")
 
 root.resizable(False, False)
 
+title_label = tk.Label(
+    root,
+    text="EMPLOYEE MANAGEMENT SYSTEM",
+    
+)
 
 
 
