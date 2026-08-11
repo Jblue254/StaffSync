@@ -1,4 +1,19 @@
-MONGO_URI = "mongodb+srv://japhethkiprono2017_db_user:KwNdmlbZsG1Lf8uX@cluster0.lbjaacm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_URI = "mongodb+srv://anthonyter35_db_user:Iw8HqTofHdPWencN@cluster0.r04qhlt.mongodb.net/?appName=Cluster0"
 
 DATABASE_NAME = "emptrack_db"
 COLLECTION_NAME = "employees"
+
+# from pymongo import MongoClient
+
+# uri = "mongodb+srv://anthonyter35_db_user:Iw8HqTofHdPWencN@cluster0.r04qhlt.mongodb.net/?appName=Cluster0"
+
+# try:
+#     client = MongoClient(uri)
+
+#     # Test connection
+#     client.admin.command("ping")
+
+#     print("✅ Connected Successfully")
+
+# except Exception as e:
+#     print("❌ Error:", e)

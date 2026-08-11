@@ -1,12 +1,13 @@
 from pymongo import MongoClient
 from config import MONGO_URI, DATABASE_NAME, COLLECTION_NAME
 
+
 class Database:
     def __init__(self):
         try:
             self.client = MongoClient(MONGO_URI)
 
-            # Test the connection
+            # Test connection
             self.client.admin.command("ping")
 
             self.db = self.client[DATABASE_NAME]
@@ -14,6 +15,5 @@ class Database:
 
             print("MongoDB Connected Successfully")
 
-        except Exception as error:
-            print("Connection Failed")
-            print(error)
+        except Exception as e:
+            print("Database Error:", e)
