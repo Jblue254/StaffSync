@@ -1,10 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-
-# =========================
 # FUNCTIONS
-# =========================
+
 
 def add_employee():
     pass
@@ -26,42 +24,39 @@ def load_employees():
     pass
 
 
-# =========================
+
 # MAIN WINDOW
-# =========================
+
 
 root = tk.Tk()
 
-root.title("EmpTrack Employee Management System")
+root.title("Employee Management System")
 root.geometry("1200x700")
 root.resizable(False, False)
 
-# =========================
 # TITLE
-# =========================
+
 
 title_label = tk.Label(
     root,
-    text="EMPTRACK EMPLOYEE MANAGEMENT SYSTEM",
+    text="EMPLOYEE MANAGEMENT SYSTEM",
     font=("Arial", 20, "bold")
 )
 
 title_label.pack(pady=10)
 
-# =========================
 # MAIN FRAME
-# =========================
+
 
 main_frame = tk.Frame(root)
 main_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
-# =========================
 # FORM FRAME
-# =========================
+
 
 form_frame = tk.LabelFrame(
     main_frame,
-    text="Employee Information",
+    text="Employee Info",
     padx=10,
     pady=10
 )
@@ -74,8 +69,7 @@ tk.Label(
     text="Employee ID"
 ).grid(row=0, column=0, sticky="w")
 
-employee_id_entry = tk.Entry(form_frame, width=30)
-employee_id_entry.grid(row=1, column=0, pady=5)
+
 
 # Full Name
 tk.Label(
@@ -147,9 +141,8 @@ delete_button = tk.Button(
 
 delete_button.grid(row=12, column=0, pady=5)
 
-# =========================
 # TABLE FRAME
-# =========================
+
 
 table_frame = tk.LabelFrame(
     main_frame,
@@ -210,8 +203,8 @@ employee_table.insert(
     )
 )
 
-# =========================
+
 # RUN APPLICATION
-# =========================
+
 
 root.mainloop()
