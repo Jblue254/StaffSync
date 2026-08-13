@@ -38,7 +38,7 @@ root.resizable(False, False)
 
 # Title
 
-tk.Label(root,text="STAFFSYNC",font=("Arial", 22, "bold")).pack(pady=20)
+tk.Label(root,text="LOGIN",font=("Arial", 22, "bold")).pack(pady=20)
 
 
 # Username
