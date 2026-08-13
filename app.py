@@ -192,9 +192,7 @@ def load_employees():
     # Display employees in the table
     for employee in employees:
 
-        employee_table.insert(
-            "",
-            "end",
+        employee_table.insert("","end",
             values=(
                 employee["employee_id"],
                 employee["name"],
@@ -203,6 +201,11 @@ def load_employees():
                 employee["status"]
             )
         )
+
+def logout():
+    root.destroy()
+
+    import login
 
 
 
@@ -217,13 +220,7 @@ root.resizable(False, False)
 
 # TITLE
 
-
-title_label = tk.Label(
-    root,
-    text="EMPLOYEE MANAGEMENT SYSTEM",
-    font=("Arial", 20, "bold")
-)
-
+title_label = tk.Label(root,text="EMPLOYEE MANAGEMENT SYSTEM",font=("Arial", 20, "bold"))
 title_label.pack(pady=10)
 
 # MAIN FRAME
@@ -234,59 +231,27 @@ main_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
 # FORM FRAME
 
-
-form_frame = tk.LabelFrame(
-    main_frame,
-    text="Employee Info",
-    padx=10,
-    pady=10
-)
-
+form_frame = tk.LabelFrame(main_frame,text="Employee Info",padx=10,pady=10)
 form_frame.pack(side="left", fill="y")
 
 
 # Full Name
-tk.Label(
-    form_frame,
-    text="Full Name"
-).grid(row=2, column=0, sticky="w")
-
-name_entry = tk.Entry(
-    form_frame,
-    width=30
-)
-
-name_entry.grid(
-    row=3,
-    column=0,
-    pady=5
-)
+tk.Label(form_frame,text="Full Name").grid(row=2, column=0, sticky="w")
+name_entry = tk.Entry(form_frame,width=30)
+name_entry.grid(row=3,column=0,pady=5)
 
 # Department
-tk.Label(
-    form_frame,
-    text="Department"
-).grid(row=4, column=0, sticky="w")
+tk.Label(form_frame,text="Department").grid(row=4, column=0, sticky="w")
 
-department_combobox = ttk.Combobox(
-    form_frame,
+department_combobox = ttk.Combobox(form_frame,
     values=[
         "IT",
         "HR",
         "Finance",
         "Marketing",
         "Sales",
-        "Operations"
-    ],
-    width=27,
-    state="readonly"
-)
-
-department_combobox.grid(
-    row=5,
-    column=0,
-    pady=5
-)
+        "Operations"],width=27,state="readonly")
+department_combobox.grid(row=5,column=0,pady=5)
 
 department_combobox.current(0)
 
@@ -297,43 +262,20 @@ salary_entry = tk.Entry(form_frame, width=30)
 salary_entry.grid(row=7, column=0, pady=5)
 
 # Status
-tk.Label(
-    form_frame,
-    text="Status"
-).grid(row=8, column=0, sticky="w")
-
-status_combobox = ttk.Combobox(
-    form_frame,
-    values=["Active", "On Leave", "Resigned"],
-    width=27
-)
+tk.Label(form_frame,text="Status").grid(row=8, column=0, sticky="w")
+status_combobox = ttk.Combobox(form_frame,values=["Active", "On Leave", "Resigned"],width=27)
 
 status_combobox.grid(row=9, column=0, pady=5)
 status_combobox.current(0)
 
 # Username
 
-tk.Label(
-    form_frame,
-    text="Username"
-).grid(row=10, column=0, sticky="w")
-
-username_entry = tk.Entry(
-    form_frame,
-    width=30
-)
-
-username_entry.grid(
-    row=11,
-    column=0,
-    pady=5
-)
+tk.Label(form_frame,text="Username").grid(row=10, column=0, sticky="w")
+username_entry = tk.Entry(form_frame,width=30)
+username_entry.grid(row=11,column=0,pady=5)
 # Temporary Password
 
-tk.Label(
-    form_frame,
-    text="Temporary Password"
-).grid(row=12, column=0, sticky="w")
+tk.Label(form_frame,text="Temporary Password").grid(row=12, column=0, sticky="w")
 
 password_entry = tk.Entry(form_frame,width=30,show="*")
 
@@ -348,6 +290,9 @@ update_button.grid(row=15, column=0, pady=5)
 
 delete_button = tk.Button(form_frame,text="Delete Employee",width=25,command=delete_employee)
 delete_button.grid(row=16, column=0, pady=5)
+
+logout_button = tk.Button(form_frame,text="Logout",width=25,command=logout)
+logout_button.grid(row=17,column=0,pady=15)
 
 # TABLE FRAME
 
