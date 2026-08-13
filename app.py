@@ -72,7 +72,29 @@ def clear_fields():
 
 
 def load_employees():
-    pass
+
+    # Remove existing rows from the table
+    employee_table.delete(
+        *employee_table.get_children()
+    )
+
+    # Get employees from MongoDB
+    employees = get_all_employees()
+
+    # Display employees in the table
+    for employee in employees:
+
+        employee_table.insert(
+            "",
+            "end",
+            values=(
+                employee["employee_id"],
+                employee["name"],
+                employee["department"],
+                employee["salary"],
+                employee["status"]
+            )
+        )
 
 
 
@@ -161,10 +183,7 @@ department_combobox.grid(
 department_combobox.current(0)
 
 # Salary
-tk.Label(
-    form_frame,
-    text="Salary"
-).grid(row=6, column=0, sticky="w")
+tk.Label(form_frame,text="Salary").grid(row=6, column=0, sticky="w")
 
 salary_entry = tk.Entry(form_frame, width=30)
 salary_entry.grid(row=7, column=0, pady=5)
@@ -208,45 +227,19 @@ tk.Label(
     text="Temporary Password"
 ).grid(row=12, column=0, sticky="w")
 
-password_entry = tk.Entry(
-    form_frame,
-    width=30,
-    show="*"
-)
+password_entry = tk.Entry(form_frame,width=30,show="*")
 
-password_entry.grid(
-    row=13,
-    column=0,
-    pady=5
-)
+password_entry.grid(row=13,column=0,pady=5)
 
 # Buttons
-add_button = tk.Button(
-    form_frame,
-    text="Add Employee",
-    width=25,
-    command=add_employee
-)
+add_button = tk.Button(form_frame,text="Add Employee",width=25,command=add_employee)
+add_button.grid(row=14, column=0, pady=10)
 
-add_button.grid(row=10, column=0, pady=10)
+update_button = tk.Button(form_frame,text="Update Employee",width=25,command=update_employee)
+update_button.grid(row=15, column=0, pady=5)
 
-update_button = tk.Button(
-    form_frame,
-    text="Update Employee",
-    width=25,
-    command=update_employee
-)
-
-update_button.grid(row=11, column=0, pady=5)
-
-delete_button = tk.Button(
-    form_frame,
-    text="Delete Employee",
-    width=25,
-    command=delete_employee
-)
-
-delete_button.grid(row=12, column=0, pady=5)
+delete_button = tk.Button(form_frame,text="Delete Employee",width=25,command=delete_employee)
+delete_button.grid(row=16, column=0, pady=5)
 
 # TABLE FRAME
 
@@ -297,21 +290,10 @@ employee_table.configure(
 scrollbar.pack(side="right", fill="y")
 employee_table.pack(fill="both", expand=True)
 
-# Sample Data
-employee_table.insert(
-    "",
-    "end",
-    values=(
-        "EMP001",
-        "John Doe",
-        "IT",
-        "50000",
-        "Active"
-    )
-)
 
+# Load employees from MongoDB
+load_employees()
 
 # RUN APPLICATION
-
 
 root.mainloop()
