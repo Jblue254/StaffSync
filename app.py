@@ -19,34 +19,42 @@ def add_employee():
     username = username_entry.get().strip()
     password = password_entry.get().strip()
 
-if not name or not department or not salary or not username or not password:
+    if not name or not department or not salary or not username or not password:
         messagebox.showwarning(
             "Missing Information",
             "Please fill in all fields."
         )
         return
 
-employee_id = generate_employee_id()
+    employee_id = generate_employee_id()
 
-employee_data = {
+    employee_data = {
         "employee_id": employee_id,
         "name": name,
         "department": department,
         "salary": salary,
         "status": status
     }
-user_data = {
+
+    user_data = {
         "username": username,
         "password": password,
         "role": "employee",
         "employee_id": employee_id
     }
 
-save_employee(employee_data)
-create_user(user_data)
-load_employees()
-clear_fields()
-messagebox.showinfo("Success",f"Employee added successfully!\n\nEmployee ID: {employee_id}")
+    save_employee(employee_data)
+
+    create_user(user_data)
+
+    load_employees()
+
+    clear_fields()
+
+    messagebox.showinfo(
+        "Success",
+        f"Employee added successfully!\n\nEmployee ID: {employee_id}"
+    )
 
 def update_employee():
     pass
