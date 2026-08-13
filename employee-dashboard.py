@@ -8,7 +8,7 @@ def logout():
     root.destroy()
 
 
-def load_employee():
+def load_employee(employee_id):
 
     employee = get_employee_by_id(employee_id)
 
