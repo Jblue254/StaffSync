@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from database import (get_employee_by_id,change_password)
+from database import (
+    get_employee_by_id,
+    change_password
+)
 
 
 def start_dashboard(employee_id, username):
@@ -14,148 +17,132 @@ def start_dashboard(employee_id, username):
 
     # LOGOUT
 
+
     def logout():
         root.destroy()
 
         import login
-    
-def open_change_password():
 
-    password_window = tk.Toplevel(root)
-
-    password_window.title("Change Password")
-    password_window.geometry("400x350")
-    password_window.resizable(False, False)
-
-    # TITLE
+    # CHANGE PASSWORD
 
 
-    tk.Label(
-        password_window,
-        text="Change Password",
-        font=("Arial", 18, "bold")
-    ).pack(pady=20)
+    def open_change_password():
 
-    # CURRENT PASSWORD
+        password_window = tk.Toplevel(root)
 
+        password_window.title("Change Password")
+        password_window.geometry("400x350")
+        password_window.resizable(False, False)
 
-    tk.Label(
-        password_window,
-        text="Current Password"
-    ).pack()
+        tk.Label(
+            password_window,
+            text="Change Password",
+            font=("Arial", 18, "bold")
+        ).pack(pady=20)
 
-    current_password_entry = tk.Entry(
-        password_window,
-        width=30,
-        show="*"
-    )
+        tk.Label(
+            password_window,
+            text="Current Password"
+        ).pack()
 
-    current_password_entry.pack(pady=5)
-
-    # NEW PASSWORD
-
-
-    tk.Label(
-        password_window,
-        text="New Password"
-    ).pack(pady=(10, 0))
-
-    new_password_entry = tk.Entry(
-        password_window,
-        width=30,
-        show="*"
-    )
-
-    new_password_entry.pack(pady=5)
-
-  
-    # CONFIRM PASSWORD
-  
-
-    tk.Label(
-        password_window,
-        text="Confirm New Password"
-    ).pack(pady=(10, 0))
-
-    confirm_password_entry = tk.Entry(
-        password_window,
-        width=30,
-        show="*"
-    )
-
-    confirm_password_entry.pack(pady=5)
-
-  
-    # UPDATE PASSWORD
-
-
-    def update_password():
-
-        current_password = current_password_entry.get()
-        new_password = new_password_entry.get()
-        confirm_password = confirm_password_entry.get()
-
-        if not current_password or not new_password or not confirm_password:
-
-            messagebox.showwarning(
-                "Missing Information",
-                "Please fill in all fields."
-            )
-
-            return
-
-        if new_password != confirm_password:
-
-            messagebox.showerror(
-                "Password Error",
-                "New passwords do not match."
-            )
-
-            return
-
-        if current_password == new_password:
-
-            messagebox.showwarning(
-                "Password Error",
-                "New password must be different from the current password."
-            )
-
-            return
-
-        success = change_password(
-            username,
-            current_password,
-            new_password
+        current_password_entry = tk.Entry(
+            password_window,
+            width=30,
+            show="*"
         )
 
-        if not success:
+        current_password_entry.pack(pady=5)
 
-            messagebox.showerror(
-                "Password Error",
-                "Current password is incorrect."
-            )
+        tk.Label(
+            password_window,
+            text="New Password"
+        ).pack(pady=(10, 0))
 
-            return
-
-        messagebox.showinfo(
-            "Success",
-            "Password changed successfully."
+        new_password_entry = tk.Entry(
+            password_window,
+            width=30,
+            show="*"
         )
 
-        password_window.destroy()
+        new_password_entry.pack(pady=5)
 
+        tk.Label(
+            password_window,
+            text="Confirm New Password"
+        ).pack(pady=(10, 0))
+
+        confirm_password_entry = tk.Entry(
+            password_window,
+            width=30,
+            show="*"
+        )
+
+        confirm_password_entry.pack(pady=5)
+
+        def update_password():
+
+            current_password = current_password_entry.get()
+            new_password = new_password_entry.get()
+            confirm_password = confirm_password_entry.get()
+
+            if not current_password or not new_password or not confirm_password:
+
+                messagebox.showwarning(
+                    "Missing Information",
+                    "Please fill in all fields."
+                )
+
+                return
+
+            if new_password != confirm_password:
+
+                messagebox.showerror(
+                    "Password Error",
+                    "New passwords do not match."
+                )
+
+                return
+
+            if current_password == new_password:
+
+                messagebox.showwarning(
+                    "Password Error",
+                    "New password must be different from the current password."
+                )
+
+                return
+
+            success = change_password(
+                username,
+                current_password,
+                new_password
+            )
+
+            if not success:
+
+                messagebox.showerror(
+                    "Password Error",
+                    "Current password is incorrect."
+                )
+
+                return
+
+            messagebox.showinfo(
+                "Success",
+                "Password changed successfully."
+            )
+
+            password_window.destroy()
+
+        tk.Button(
+            password_window,
+            text="Change Password",
+            width=20,
+            command=update_password
+        ).pack(pady=20)
+
+    # GET EMPLOYEE
  
-    # BUTTON
-
-
-    tk.Button(
-        password_window,
-        text="Change Password",
-        width=20,
-        command=update_password
-    ).pack(pady=20)
-
-    # LOAD EMPLOYEE
 
     employee = get_employee_by_id(employee_id)
 
@@ -169,9 +156,7 @@ def open_change_password():
         root.destroy()
         return
 
-
     # TITLE
- 
 
     tk.Label(
         root,
@@ -194,9 +179,9 @@ def open_change_password():
         font=("Arial", 12)
     ).pack(pady=5)
 
-
-    # PROFILE FRAME
-
+    # =========================
+    # PROFILE
+    # =========================
 
     profile_frame = tk.LabelFrame(
         root,
@@ -211,8 +196,7 @@ def open_change_password():
         fill="x"
     )
 
-   
-    # EMPLOYEE ID
+    # Employee ID
 
     tk.Label(
         profile_frame,
@@ -236,7 +220,7 @@ def open_change_password():
         pady=8
     )
 
-    # FULL NAME
+    # Full Name
 
     tk.Label(
         profile_frame,
@@ -260,7 +244,7 @@ def open_change_password():
         pady=8
     )
 
-    # DEPARTMENT
+    # Department
 
     tk.Label(
         profile_frame,
@@ -273,28 +257,85 @@ def open_change_password():
         pady=8
     )
 
-    tk.Label(profile_frame,text=employee["department"]).grid(row=2,column=1,sticky="w",padx=30,pady=8)
+    tk.Label(
+        profile_frame,
+        text=employee["department"]
+    ).grid(
+        row=2,
+        column=1,
+        sticky="w",
+        padx=30,
+        pady=8
+    )
 
-    # SALARY
+    # Salary
 
-    tk.Label(profile_frame,text="Salary:",font=("Arial", 11, "bold")).grid(row=3,column=0,sticky="w",pady=8)
-    tk.Label(profile_frame,text=employee["salary"]).grid(row=3,column=1,sticky="w",padx=30,pady=8)
+    tk.Label(
+        profile_frame,
+        text="Salary:",
+        font=("Arial", 11, "bold")
+    ).grid(
+        row=3,
+        column=0,
+        sticky="w",
+        pady=8
+    )
 
-    # STATUS
+    tk.Label(
+        profile_frame,
+        text=employee["salary"]
+    ).grid(
+        row=3,
+        column=1,
+        sticky="w",
+        padx=30,
+        pady=8
+    )
 
-    tk.Label(profile_frame,text="Status:",font=("Arial", 11, "bold")).grid(row=4,column=0,sticky="w",pady=8)
-    tk.Label(profile_frame,text=employee["status"]).grid(row=4,column=1,sticky="w",padx=30,pady=8)
-     
-    #CHANGE PASSWORD BUTTON
-    change_password_button = tk.Button(root,text="Change Password",width=20,command=open_change_password)
-    change_password_button.pack(pady=5)
-    
-    # LOGOUT BUTTON
- 
-    logout_button = tk.Button(root,text="Logout",width=20,command=logout)
-    logout_button.pack(pady=20)
+    # Status
 
+    tk.Label(
+        profile_frame,
+        text="Status:",
+        font=("Arial", 11, "bold")
+    ).grid(
+        row=4,
+        column=0,
+        sticky="w",
+        pady=8
+    )
 
+    tk.Label(
+        profile_frame,
+        text=employee["status"]
+    ).grid(
+        row=4,
+        column=1,
+        sticky="w",
+        padx=30,
+        pady=8
+    )
+
+    # BUTTONS
+  
+
+    change_password_button = tk.Button(
+        root,
+        text="Change Password",
+        width=20,
+        command=open_change_password
+    )
+
+    change_password_button.pack(pady=10)
+
+    logout_button = tk.Button(
+        root,
+        text="Logout",
+        width=20,
+        command=logout
+    )
+
+    logout_button.pack(pady=5)
 
     # RUN
 
