@@ -149,6 +149,24 @@ username_entry.grid(
     column=0,
     pady=5
 )
+# Temporary Password
+
+tk.Label(
+    form_frame,
+    text="Temporary Password"
+).grid(row=12, column=0, sticky="w")
+
+password_entry = tk.Entry(
+    form_frame,
+    width=30,
+    show="*"
+)
+
+password_entry.grid(
+    row=13,
+    column=0,
+    pady=5
+)
 
 # Buttons
 add_button = tk.Button(
