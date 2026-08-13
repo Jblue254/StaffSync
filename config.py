@@ -1,6 +1,6 @@
 MONGO_URI ="mongodb+srv://anthonyter35_db_user:Iw8HqTofHdPWencN@cluster0.r04qhlt.mongodb.net/?appName=Cluster0"
 
-DATABASE_NAME = "emptrack_db"
+DATABASE_NAME = "staffsync_db"
 
 EMPLOYEE_COLLECTION = "employees"
 
