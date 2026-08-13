@@ -1,9 +1,12 @@
 import tkinter as tk
 
+from database import get_employee_statistics
+
 
 def open_employee_management():
 
-    # Open the employee management system
+    root.destroy()
+
     import app
 
 
@@ -11,44 +14,230 @@ def logout():
 
     root.destroy()
 
-# ADMIN DASHBOARD
+    import login
+
+
+# =========================
+# MAIN WINDOW
+# =========================
 
 root = tk.Tk()
 
 root.title("StaffSync - Admin Dashboard")
-root.geometry("700x500")
+root.geometry("900x600")
 root.resizable(False, False)
 
 
+# =========================
 # TITLE
+# =========================
+
+title_label = tk.Label(
+    root,
+    text="STAFFSYNC",
+    font=("Arial", 26, "bold")
+)
+
+title_label.pack(pady=(20, 5))
 
 
-title_label = tk.Label(root,text="ADMIN DASHBOARD",font=("Arial", 26, "bold"))
-title_label.pack(pady=20)
+subtitle_label = tk.Label(
+    root,
+    text="Admin Dashboard",
+    font=("Arial", 16)
+)
+
+subtitle_label.pack(pady=5)
 
 
-# WELCOME MESSAGE
+# =========================
+# WELCOME
+# =========================
 
-welcome_label = tk.Label(root,text="Welcome, Admini",font=("Arial", 18))
+welcome_label = tk.Label(
+    root,
+    text="Welcome, Administrator",
+    font=("Arial", 13)
+)
+
 welcome_label.pack(pady=10)
 
 
-# DESCRIPTION
+# =========================
+# STATISTICS
+# =========================
 
-description_label = tk.Label(root,text="Manage employees and view employee information.",font=("Arial", 12))
-description_label.pack(pady=10)
+statistics = get_employee_statistics()
 
+
+stats_frame = tk.Frame(root)
+
+stats_frame.pack(
+    fill="x",
+    padx=40,
+    pady=20
+)
+
+
+# =========================
+# TOTAL EMPLOYEES
+# =========================
+
+total_frame = tk.LabelFrame(
+    stats_frame,
+    text="Total Employees",
+    padx=20,
+    pady=15
+)
+
+total_frame.pack(
+    side="left",
+    expand=True,
+    fill="both",
+    padx=5
+)
+
+total_value = tk.Label(
+    total_frame,
+    text=str(statistics["total"]),
+    font=("Arial", 24, "bold")
+)
+
+total_value.pack()
+
+
+# =========================
+# ACTIVE EMPLOYEES
+# =========================
+
+active_frame = tk.LabelFrame(
+    stats_frame,
+    text="Active Employees",
+    padx=20,
+    pady=15
+)
+
+active_frame.pack(
+    side="left",
+    expand=True,
+    fill="both",
+    padx=5
+)
+
+active_value = tk.Label(
+    active_frame,
+    text=str(statistics["active"]),
+    font=("Arial", 24, "bold")
+)
+
+active_value.pack()
+
+
+# =========================
+# ON LEAVE
+# =========================
+
+leave_frame = tk.LabelFrame(
+    stats_frame,
+    text="On Leave",
+    padx=20,
+    pady=15
+)
+
+leave_frame.pack(
+    side="left",
+    expand=True,
+    fill="both",
+    padx=5
+)
+
+leave_value = tk.Label(
+    leave_frame,
+    text=str(statistics["on_leave"]),
+    font=("Arial", 24, "bold")
+)
+
+leave_value.pack()
+
+
+# =========================
+# RESIGNED
+# =========================
+
+resigned_frame = tk.LabelFrame(
+    stats_frame,
+    text="Resigned",
+    padx=20,
+    pady=15
+)
+
+resigned_frame.pack(
+    side="left",
+    expand=True,
+    fill="both",
+    padx=5
+)
+
+resigned_value = tk.Label(
+    resigned_frame,
+    text=str(statistics["resigned"]),
+    font=("Arial", 24, "bold")
+)
+
+resigned_value.pack()
+
+
+# =========================
 # EMPLOYEE MANAGEMENT
+# =========================
 
-employee_button = tk.Button(root,text="Employee Management",width=30,height=2,command=open_employee_management)
-employee_button.pack(pady=20)
+management_frame = tk.LabelFrame(
+    root,
+    text="Employee Management",
+    padx=30,
+    pady=30
+)
 
+management_frame.pack(
+    padx=40,
+    pady=30,
+    fill="x"
+)
+
+
+tk.Label(
+    management_frame,
+    text="Add, update, delete and manage employee records.",
+    font=("Arial", 12)
+).pack(pady=10)
+
+
+manage_button = tk.Button(
+    management_frame,
+    text="Manage Employees",
+    width=30,
+    height=2,
+    command=open_employee_management
+)
+
+manage_button.pack(pady=10)
+
+
+# =========================
 # LOGOUT
+# =========================
 
-logout_button = tk.Button(root,text="Logout",width=20,command=logout)
+logout_button = tk.Button(
+    root,
+    text="Logout",
+    width=20,
+    command=logout
+)
+
 logout_button.pack(pady=10)
 
-# RUN APPLICATION
+# RUN
+
 
 if __name__ == "__main__":
     root.mainloop()
