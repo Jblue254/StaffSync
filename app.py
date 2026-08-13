@@ -28,7 +28,19 @@ if not name or not department or not salary or not username or not password:
 
 employee_id = generate_employee_id()
 
-
+employee_data = {
+        "employee_id": employee_id,
+        "name": name,
+        "department": department,
+        "salary": salary,
+        "status": status
+    }
+user_data = {
+        "username": username,
+        "password": password,
+        "role": "employee",
+        "employee_id": employee_id
+    }
 
 def update_employee():
     pass
