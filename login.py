@@ -29,7 +29,7 @@ def login():
     password = password_entry.get().strip()
 
     if not username or not password:
-        
+
         messagebox.showwarning("Missing Information","Please enter username and password.")
 
         return
@@ -75,6 +75,7 @@ password_entry.pack(pady=5)
 
 tk.Button(root,text="Login",width=20,command=login).pack(pady=20)
 
-# RUN
+# RUN APPLICATION
 
-root.mainloop()
+if __name__ == "__main__":
+    root.mainloop()

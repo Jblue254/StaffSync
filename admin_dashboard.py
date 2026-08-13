@@ -48,6 +48,7 @@ employee_button.pack(pady=20)
 logout_button = tk.Button(root,text="Logout",width=20,command=logout)
 logout_button.pack(pady=10)
 
-# RUN
+# RUN APPLICATION
 
-root.mainloop()
+if __name__ == "__main__":
+    root.mainloop()
