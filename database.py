@@ -17,9 +17,8 @@ users_collection = db[USER_COLLECTION]
 departments_collection = db[DEPARTMENT_COLLECTION]
 
 
-# =========================
 # EMPLOYEE FUNCTIONS
-# =========================
+
 
 def add_employee(employee_data):
     return employees_collection.insert_one(employee_data)
@@ -61,9 +60,8 @@ def generate_employee_id():
     return f"EMP{new_number:03d}"
 
 
-# =========================
 # USER FUNCTIONS
-# =========================
+
 
 def create_user(user_data):
     return users_collection.insert_one(user_data)
@@ -74,10 +72,8 @@ def find_user(username):
         {"username": username}
     )
 
-
-# =========================
 # DEPARTMENT FUNCTIONS
-# =========================
+
 
 def add_department(department_data):
     return departments_collection.insert_one(
@@ -104,3 +100,11 @@ def login_user(username, password):
     })
 
     return user
+
+def get_employee_by_id(employee_id):
+
+    employee = employees_collection.find_one({
+        "employee_id": employee_id
+    })
+
+    return employee
