@@ -9,71 +9,154 @@ def start_dashboard(employee_id):
     root = tk.Tk()
 
     root.title("StaffSync - Employee Dashboard")
-    root.geometry("700x500")
+    root.geometry("700x550")
     root.resizable(False, False)
 
-    def load_employee():
 
-        employee = get_employee_by_id(employee_id)
+    # LOGOUT
 
-        if employee is None:
 
-            messagebox.showerror(
-                "Error",
-                "Employee information could not be found."
-            )
+    def logout():
+        root.destroy()
 
-            return
+        import login
 
-        id_value.config(text=employee["employee_id"])
-        name_value.config(text=employee["name"])
-        department_value.config(text=employee["department"])
-        salary_value.config(text=employee["salary"])
-        status_value.config(text=employee["status"])
+    # LOAD EMPLOYEE
+
+
+    employee = get_employee_by_id(employee_id)
+
+    if employee is None:
+
+        messagebox.showerror(
+            "Error",
+            "Employee information could not be found."
+        )
+
+        root.destroy()
+        return
+
 
     # TITLE
+ 
+
+    tk.Label(
+        root,
+        text="STAFFSYNC",
+        font=("Arial", 26, "bold")
+    ).pack(pady=20)
+
+    # WELCOME
+
+
+    tk.Label(
+        root,
+        text=f"Welcome, {employee['name']}",
+        font=("Arial", 18)
+    ).pack(pady=5)
+
+    tk.Label(
+        root,
+        text="Employee Dashboard",
+        font=("Arial", 12)
+    ).pack(pady=5)
+
+
+    # PROFILE FRAME
+
+
+    profile_frame = tk.LabelFrame(
+        root,
+        text="My Profile",
+        padx=30,
+        pady=20
+    )
+
+    profile_frame.pack(
+        padx=40,
+        pady=20,
+        fill="x"
+    )
+
    
-    tk.Label(root,text="STAFFSYNC",font=("Arial", 26, "bold")).pack(pady=20)
-    tk.Label(root,text="Employee Dashboard",font=("Arial", 18)).pack(pady=10)
+    # EMPLOYEE ID
 
-    # INFORMATION
-    info_frame = tk.LabelFrame(root,text="My Information",padx=30,pady=20)
-    info_frame.pack(pady=20)
+    tk.Label(
+        profile_frame,
+        text="Employee ID:",
+        font=("Arial", 11, "bold")
+    ).grid(
+        row=0,
+        column=0,
+        sticky="w",
+        pady=8
+    )
 
-    # Employee ID
+    tk.Label(
+        profile_frame,
+        text=employee["employee_id"]
+    ).grid(
+        row=0,
+        column=1,
+        sticky="w",
+        padx=30,
+        pady=8
+    )
 
-    tk.Label(info_frame,text="Employee ID:").grid(row=0,column=0,sticky="w",pady=8)
-    id_value = tk.Label(info_frame,text="-",width=25,anchor="w")
-    id_value.grid(row=0,column=1,pady=8)
+    # FULL NAME
 
-    # Name
+    tk.Label(
+        profile_frame,
+        text="Full Name:",
+        font=("Arial", 11, "bold")
+    ).grid(
+        row=1,
+        column=0,
+        sticky="w",
+        pady=8
+    )
 
-    tk.Label(info_frame,text="Full Name:").grid(row=1,column=0,sticky="w",pady=8)
-    name_value = tk.Label(info_frame,text="-",width=25,anchor="w")
-    name_value.grid(row=1,column=1,pady=8)
+    tk.Label(
+        profile_frame,
+        text=employee["name"]
+    ).grid(
+        row=1,
+        column=1,
+        sticky="w",
+        padx=30,
+        pady=8
+    )
 
-    # Department
+    # DEPARTMENT
 
-    tk.Label(info_frame,text="Department:").grid(row=2,column=0,sticky="w",pady=8)
-    department_value = tk.Label(info_frame,text="-",width=25,anchor="w")
-    department_value.grid(row=2,column=1,pady=8)
+    tk.Label(
+        profile_frame,
+        text="Department:",
+        font=("Arial", 11, "bold")
+    ).grid(
+        row=2,
+        column=0,
+        sticky="w",
+        pady=8
+    )
 
-    # Salary
+    tk.Label(profile_frame,text=employee["department"]).grid(row=2,column=1,sticky="w",padx=30,pady=8)
 
-    tk.Label(info_frame,text="Salary:").grid(row=3,column=0,sticky="w",pady=8)
-    salary_value = tk.Label(info_frame,text="-",width=25,anchor="w")
-    salary_value.grid(row=3,column=1,pady=8)
+    # SALARY
 
-    # Status
+    tk.Label(profile_frame,text="Salary:",font=("Arial", 11, "bold")).grid(row=3,column=0,sticky="w",pady=8)
+    tk.Label(profile_frame,text=employee["salary"]).grid(row=3,column=1,sticky="w",padx=30,pady=8)
 
-    tk.Label(info_frame,text="Status:").grid(row=4,column=0,sticky="w",pady=8)
-    status_value = tk.Label(info_frame,text="-",width=25,anchor="w")
-    status_value.grid(row=4,column=1,pady=8)
+    # STATUS
 
-    # Logout
+    tk.Label(profile_frame,text="Status:",font=("Arial", 11, "bold")).grid(row=4,column=0,sticky="w",pady=8)
+    tk.Label(profile_frame,text=employee["status"]).grid(row=4,column=1,sticky="w",padx=30,pady=8)
 
-    tk.Button(root,text="Logout",width=20,command=root.destroy).pack(pady=10)
+    # LOGOUT BUTTON
+ 
+    logout_button = tk.Button(root,text="Logout",width=20,command=logout)
+    logout_button.pack(pady=20)
 
-    load_employee()
+    # RUN
 
     root.mainloop()
