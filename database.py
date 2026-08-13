@@ -108,3 +108,24 @@ def get_employee_by_id(employee_id):
     })
 
     return employee
+
+def change_password(username, current_password, new_password):
+
+    user = users_collection.find_one({
+        "username": username,
+        "password": current_password
+    })
+
+    if user is None:
+        return False
+
+    users_collection.update_one(
+        {"username": username},
+        {
+            "$set": {
+                "password": new_password
+            }
+        }
+    )
+
+    return True
