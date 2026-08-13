@@ -86,7 +86,27 @@ tk.Label(
     text="Department"
 ).grid(row=4, column=0, sticky="w")
 
+department_combobox = ttk.Combobox(
+    form_frame,
+    values=[
+        "IT",
+        "HR",
+        "Finance",
+        "Marketing",
+        "Sales",
+        "Operations"
+    ],
+    width=27,
+    state="readonly"
+)
 
+department_combobox.grid(
+    row=5,
+    column=0,
+    pady=5
+)
+
+department_combobox.current(0)
 
 # Salary
 tk.Label(
