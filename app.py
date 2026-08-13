@@ -132,6 +132,24 @@ status_combobox = ttk.Combobox(
 status_combobox.grid(row=9, column=0, pady=5)
 status_combobox.current(0)
 
+# Username
+
+tk.Label(
+    form_frame,
+    text="Username"
+).grid(row=10, column=0, sticky="w")
+
+username_entry = tk.Entry(
+    form_frame,
+    width=30
+)
+
+username_entry.grid(
+    row=11,
+    column=0,
+    pady=5
+)
+
 # Buttons
 add_button = tk.Button(
     form_frame,
