@@ -57,7 +57,18 @@ def delete_employee():
 
 
 def clear_fields():
-    pass
+
+    name_entry.delete(0, tk.END)
+
+    department_combobox.current(0)
+
+    salary_entry.delete(0, tk.END)
+
+    status_combobox.current(0)
+
+    username_entry.delete(0, tk.END)
+
+    password_entry.delete(0, tk.END)
 
 
 def load_employees():
@@ -110,8 +121,16 @@ tk.Label(
     text="Full Name"
 ).grid(row=2, column=0, sticky="w")
 
-name_entry = tk.Entry(form_frame, width=30)
-name_entry.grid(row=3, column=0, pady=5)
+name_entry = tk.Entry(
+    form_frame,
+    width=30
+)
+
+name_entry.grid(
+    row=3,
+    column=0,
+    pady=5
+)
 
 # Department
 tk.Label(
