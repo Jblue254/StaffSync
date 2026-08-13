@@ -42,6 +42,12 @@ user_data = {
         "employee_id": employee_id
     }
 
+save_employee(employee_data)
+create_user(user_data)
+load_employees()
+clear_fields()
+messagebox.showinfo("Success",f"Employee added successfully!\n\nEmployee ID: {employee_id}")
+
 def update_employee():
     pass
 
