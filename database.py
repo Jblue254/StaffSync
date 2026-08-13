@@ -8,19 +8,12 @@ from config import (
     DEPARTMENT_COLLECTION
 )
 
-
-# =========================
-# MONGODB CONNECTION
-# =========================
-
 client = MongoClient(MONGO_URI)
 
 db = client[DATABASE_NAME]
 
 employees_collection = db[EMPLOYEE_COLLECTION]
-
 users_collection = db[USER_COLLECTION]
-
 departments_collection = db[DEPARTMENT_COLLECTION]
 
 
@@ -102,3 +95,12 @@ def delete_department(department_name):
     return departments_collection.delete_one(
         {"name": department_name}
     )
+
+def login_user(username, password):
+
+    user = users_collection.find_one({
+        "username": username,
+        "password": password
+    })
+
+    return user

@@ -5,10 +5,34 @@ from database import (
     add_employee as save_employee,
     get_all_employees,
     generate_employee_id,
-    create_user
+    create_user,
+    update_employee as update_employee_database,
+    delete_employee as delete_employee_database
 )
 
 # FUNCTIONS
+def select_employee(event):
+
+    selected = employee_table.selection()
+
+    if not selected:
+        return
+
+    employee = employee_table.item(selected[0])
+
+    values = employee["values"]
+
+    name_entry.delete(0, tk.END)
+    name_entry.insert(0, values[1])
+
+    department_combobox.set(values[2])
+
+    salary_entry.delete(0, tk.END)
+    salary_entry.insert(0, values[3])
+
+    status_combobox.set(values[4])
+
+
 
 def add_employee():
 
@@ -57,11 +81,87 @@ def add_employee():
     )
 
 def update_employee():
-    pass
+
+    selected = employee_table.selection()
+
+    if not selected:
+        messagebox.showwarning(
+            "No Selection",
+            "Please select an employee from the table."
+        )
+        return
+
+    employee = employee_table.item(selected[0])
+
+    employee_id = employee["values"][0]
+
+    name = name_entry.get().strip()
+    department = department_combobox.get()
+    salary = salary_entry.get().strip()
+    status = status_combobox.get()
+
+    if not name or not department or not salary:
+        messagebox.showwarning(
+            "Missing Information",
+            "Please fill in all employee fields."
+        )
+        return
+
+    updated_data = {
+        "name": name,
+        "department": department,
+        "salary": salary,
+        "status": status
+    }
+
+    update_employee_database(
+        employee_id,
+        updated_data
+    )
+
+    load_employees()
+
+    clear_fields()
+
+    messagebox.showinfo(
+        "Success",
+        f"Employee {employee_id} updated successfully."
+    )
 
 
 def delete_employee():
-    pass
+
+    selected = employee_table.selection()
+
+    if not selected:
+        messagebox.showwarning(
+            "No Selection",
+            "Please select an employee from the table."
+        )
+        return
+
+    employee = employee_table.item(selected[0])
+
+    employee_id = employee["values"][0]
+
+    confirm = messagebox.askyesno(
+        "Confirm Delete",
+        f"Are you sure you want to delete {employee_id}?"
+    )
+
+    if not confirm:
+        return
+
+    delete_employee_database(employee_id)
+
+    load_employees()
+
+    clear_fields()
+
+    messagebox.showinfo(
+        "Success",
+        f"Employee {employee_id} deleted successfully."
+    )
 
 
 def clear_fields():
@@ -278,6 +378,10 @@ employee_table = ttk.Treeview(
     table_frame,
     columns=columns,
     show="headings"
+)
+employee_table.bind(
+    "<<TreeviewSelect>>",
+    select_employee
 )
 
 for col in columns:
