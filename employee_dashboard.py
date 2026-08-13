@@ -4,7 +4,7 @@ from tkinter import messagebox
 from database import (get_employee_by_id,change_password)
 
 
-def start_dashboard(employee_id):
+def start_dashboard(employee_id, username):
 
     root = tk.Tk()
 
@@ -123,7 +123,7 @@ def open_change_password():
             return
 
         success = change_password(
-            employee["username"],
+            username,
             current_password,
             new_password
         )
@@ -284,11 +284,17 @@ def open_change_password():
 
     tk.Label(profile_frame,text="Status:",font=("Arial", 11, "bold")).grid(row=4,column=0,sticky="w",pady=8)
     tk.Label(profile_frame,text=employee["status"]).grid(row=4,column=1,sticky="w",padx=30,pady=8)
-
+     
+    #CHANGE PASSWORD BUTTON
+    change_password_button = tk.Button(root,text="Change Password",width=20,command=open_change_password)
+    change_password_button.pack(pady=5)
+    
     # LOGOUT BUTTON
  
     logout_button = tk.Button(root,text="Logout",width=20,command=logout)
     logout_button.pack(pady=20)
+
+
 
     # RUN
 

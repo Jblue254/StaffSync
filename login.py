@@ -19,7 +19,8 @@ def open_dashboard(user):
         import employee_dashboard
 
         employee_dashboard.start_dashboard(
-            user["employee_id"]
+            user["employee_id"],
+            user["username"]
         )
 
 
