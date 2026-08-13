@@ -129,3 +129,26 @@ def change_password(username, current_password, new_password):
     )
 
     return True
+
+def get_employee_statistics():
+
+    total = employees_collection.count_documents({})
+
+    active = employees_collection.count_documents({
+        "status": "Active"
+    })
+
+    on_leave = employees_collection.count_documents({
+        "status": "On Leave"
+    })
+
+    resigned = employees_collection.count_documents({
+        "status": "Resigned"
+    })
+
+    return {
+        "total": total,
+        "active": active,
+        "on_leave": on_leave,
+        "resigned": resigned
+    }
