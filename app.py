@@ -4,6 +4,7 @@ from tkinter import ttk, messagebox
 from database import (
     add_employee as save_employee,
     get_all_employees,
+    get_all_departments,
     generate_employee_id,
     create_user,
     update_employee as update_employee_database,
@@ -11,6 +12,7 @@ from database import (
 )
 
 # FUNCTIONS
+
 def select_employee(event):
 
     selected = employee_table.selection()
@@ -33,7 +35,6 @@ def select_employee(event):
     status_combobox.set(values[4])
 
 
-
 def add_employee():
 
     name = name_entry.get().strip()
@@ -44,10 +45,12 @@ def add_employee():
     password = password_entry.get().strip()
 
     if not name or not department or not salary or not username or not password:
+
         messagebox.showwarning(
             "Missing Information",
             "Please fill in all fields."
         )
+
         return
 
     employee_id = generate_employee_id()
@@ -80,15 +83,18 @@ def add_employee():
         f"Employee added successfully!\n\nEmployee ID: {employee_id}"
     )
 
+
 def update_employee():
 
     selected = employee_table.selection()
 
     if not selected:
+
         messagebox.showwarning(
             "No Selection",
             "Please select an employee from the table."
         )
+
         return
 
     employee = employee_table.item(selected[0])
@@ -101,10 +107,12 @@ def update_employee():
     status = status_combobox.get()
 
     if not name or not department or not salary:
+
         messagebox.showwarning(
             "Missing Information",
             "Please fill in all employee fields."
         )
+
         return
 
     updated_data = {
@@ -134,10 +142,12 @@ def delete_employee():
     selected = employee_table.selection()
 
     if not selected:
+
         messagebox.showwarning(
             "No Selection",
             "Please select an employee from the table."
         )
+
         return
 
     employee = employee_table.item(selected[0])
@@ -168,7 +178,8 @@ def clear_fields():
 
     name_entry.delete(0, tk.END)
 
-    department_combobox.current(0)
+    if department_combobox["values"]:
+        department_combobox.current(0)
 
     salary_entry.delete(0, tk.END)
 
@@ -181,7 +192,7 @@ def clear_fields():
 
 def load_employees():
 
-    # Remove existing rows from the table
+    # Remove existing rows
     employee_table.delete(
         *employee_table.get_children()
     )
@@ -189,10 +200,12 @@ def load_employees():
     # Get employees from MongoDB
     employees = get_all_employees()
 
-    # Display employees in the table
+    # Display employees
     for employee in employees:
 
-        employee_table.insert("","end",
+        employee_table.insert(
+            "",
+            "end",
             values=(
                 employee["employee_id"],
                 employee["name"],
@@ -202,7 +215,27 @@ def load_employees():
             )
         )
 
+
+def load_departments():
+
+    departments = get_all_departments()
+
+    department_names = []
+
+    for department in departments:
+
+        department_names.append(
+            department["name"]
+        )
+
+    department_combobox["values"] = department_names
+
+    if department_names:
+        department_combobox.current(0)
+
+
 def logout():
+
     root.destroy()
 
     import login
@@ -242,18 +275,8 @@ name_entry.grid(row=3,column=0,pady=5)
 
 # Department
 tk.Label(form_frame,text="Department").grid(row=4, column=0, sticky="w")
-
-department_combobox = ttk.Combobox(form_frame,
-    values=[
-        "IT",
-        "HR",
-        "Finance",
-        "Marketing",
-        "Sales",
-        "Operations"],width=27,state="readonly")
+department_combobox = ttk.Combobox(form_frame,width=27,state="readonly")
 department_combobox.grid(row=5,column=0,pady=5)
-
-department_combobox.current(0)
 
 # Salary
 tk.Label(form_frame,text="Salary").grid(row=6, column=0, sticky="w")
@@ -347,6 +370,8 @@ employee_table.configure(
 scrollbar.pack(side="right", fill="y")
 employee_table.pack(fill="both", expand=True)
 
+# Load departments from MongoDB
+load_departments()
 
 # Load employees from MongoDB
 load_employees()
