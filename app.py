@@ -70,13 +70,6 @@ form_frame = tk.LabelFrame(
 
 form_frame.pack(side="left", fill="y")
 
-# Employee ID
-tk.Label(
-    form_frame,
-    text="Employee ID"
-).grid(row=0, column=0, sticky="w")
-
-
 
 # Full Name
 tk.Label(
@@ -93,8 +86,7 @@ tk.Label(
     text="Department"
 ).grid(row=4, column=0, sticky="w")
 
-department_entry = tk.Entry(form_frame, width=30)
-department_entry.grid(row=5, column=0, pady=5)
+
 
 # Salary
 tk.Label(
