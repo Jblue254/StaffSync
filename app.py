@@ -10,9 +10,24 @@ from database import (
 
 # FUNCTIONS
 
-
 def add_employee():
-    pass
+
+    name = name_entry.get().strip()
+    department = department_combobox.get()
+    salary = salary_entry.get().strip()
+    status = status_combobox.get()
+    username = username_entry.get().strip()
+    password = password_entry.get().strip()
+
+if not name or not department or not salary or not username or not password:
+        messagebox.showwarning(
+            "Missing Information",
+            "Please fill in all fields."
+        )
+        return
+
+employee_id = generate_employee_id()
+
 
 
 def update_employee():
