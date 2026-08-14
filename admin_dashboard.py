@@ -238,9 +238,7 @@ department_button = tk.Button(
 
 department_button.pack(pady=5)
 
-# =========================
 # LOGOUT
-# =========================
 
 logout_button = tk.Button(
     root,
@@ -252,7 +250,6 @@ logout_button = tk.Button(
 logout_button.pack(pady=10)
 
 # RUN
-
 
 if __name__ == "__main__":
     root.mainloop()

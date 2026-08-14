@@ -152,3 +152,15 @@ def get_employee_statistics():
         "on_leave": on_leave,
         "resigned": resigned
     }
+
+def search_employees(keyword):
+
+    employees = employees_collection.find({
+        "$or": [
+            {"employee_id": {"$regex": keyword, "$options": "i"}},
+            {"name": {"$regex": keyword, "$options": "i"}},
+            {"department": {"$regex": keyword, "$options": "i"}}
+        ]
+    })
+
+    return list(employees)
