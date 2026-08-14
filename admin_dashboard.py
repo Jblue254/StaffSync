@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from database import get_employee_statistics
-
+from department_management import open_department_management
 
 def open_employee_management():
 
@@ -17,20 +17,18 @@ def logout():
     import login
 
 
-# =========================
 # MAIN WINDOW
-# =========================
+
 
 root = tk.Tk()
 
 root.title("StaffSync - Admin Dashboard")
-root.geometry("900x600")
+root.geometry("1000x800")
 root.resizable(False, False)
 
 
-# =========================
 # TITLE
-# =========================
+
 
 title_label = tk.Label(
     root,
@@ -63,12 +61,9 @@ welcome_label = tk.Label(
 welcome_label.pack(pady=10)
 
 
-# =========================
 # STATISTICS
-# =========================
 
 statistics = get_employee_statistics()
-
 
 stats_frame = tk.Frame(root)
 
@@ -78,10 +73,7 @@ stats_frame.pack(
     pady=20
 )
 
-
-# =========================
 # TOTAL EMPLOYEES
-# =========================
 
 total_frame = tk.LabelFrame(
     stats_frame,
@@ -105,10 +97,7 @@ total_value = tk.Label(
 
 total_value.pack()
 
-
-# =========================
 # ACTIVE EMPLOYEES
-# =========================
 
 active_frame = tk.LabelFrame(
     stats_frame,
@@ -133,9 +122,7 @@ active_value = tk.Label(
 active_value.pack()
 
 
-# =========================
 # ON LEAVE
-# =========================
 
 leave_frame = tk.LabelFrame(
     stats_frame,
@@ -159,10 +146,7 @@ leave_value = tk.Label(
 
 leave_value.pack()
 
-
-# =========================
 # RESIGNED
-# =========================
 
 resigned_frame = tk.LabelFrame(
     stats_frame,
@@ -187,9 +171,7 @@ resigned_value = tk.Label(
 resigned_value.pack()
 
 
-# =========================
 # EMPLOYEE MANAGEMENT
-# =========================
 
 management_frame = tk.LabelFrame(
     root,
@@ -221,7 +203,40 @@ manage_button = tk.Button(
 )
 
 manage_button.pack(pady=10)
+# =========================
+# DEPARTMENT MANAGEMENT
+# =========================
 
+department_frame = tk.LabelFrame(
+    root,
+    text="Department Management",
+    padx=30,
+    pady=20
+)
+
+department_frame.pack(
+    padx=40,
+    pady=10,
+    fill="x"
+)
+
+
+tk.Label(
+    department_frame,
+    text="Add and manage company departments.",
+    font=("Arial", 12)
+).pack(pady=5)
+
+
+department_button = tk.Button(
+    department_frame,
+    text="Manage Departments",
+    width=30,
+    height=2,
+    command=open_department_management
+)
+
+department_button.pack(pady=5)
 
 # =========================
 # LOGOUT
