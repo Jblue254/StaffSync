@@ -8,7 +8,8 @@ from database import (
     generate_employee_id,
     create_user,
     update_employee as update_employee_database,
-    delete_employee as delete_employee_database
+    delete_employee as delete_employee_database,
+    search_employees
 )
 
 # FUNCTIONS
@@ -73,6 +74,30 @@ def add_employee():
     save_employee(employee_data)
 
     create_user(user_data)
+
+def search_employee():
+
+    keyword = search_entry.get().strip()
+
+    employee_table.delete(
+        *employee_table.get_children()
+    )
+
+    employees = search_employees(keyword)
+
+    for employee in employees:
+
+        employee_table.insert(
+            "",
+            "end",
+            values=(
+                employee["employee_id"],
+                employee["name"],
+                employee["department"],
+                employee["salary"],
+                employee["status"]
+            )
+        )
 
     load_employees()
 
@@ -316,6 +341,55 @@ delete_button.grid(row=16, column=0, pady=5)
 
 logout_button = tk.Button(form_frame,text="Logout",width=25,command=logout)
 logout_button.grid(row=17,column=0,pady=15)
+
+#SEARCH FRAME
+
+search_frame = tk.Frame(main_frame)
+
+search_frame.pack(
+    fill="x",
+    pady=10
+)
+
+tk.Label(
+    search_frame,
+    text="Search Employee:"
+).pack(
+    side="left",
+    padx=5
+)
+
+search_entry = tk.Entry(
+    search_frame,
+    width=30
+)
+
+search_entry.pack(
+    side="left",
+    padx=5
+)
+
+search_button = tk.Button(
+    search_frame,
+    text="Search",
+    command=search_employee
+)
+
+search_button.pack(
+    side="left",
+    padx=5
+)
+#RESET BUTTON FOR THE SEARCH BAR
+reset_button = tk.Button(
+    search_frame,
+    text="Show All",
+    command=load_employees
+)
+
+reset_button.pack(
+    side="left",
+    padx=5
+)
 
 # TABLE FRAME
 
