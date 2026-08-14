@@ -273,7 +273,7 @@ def logout():
 root = tk.Tk()
 
 root.title("Employee Management System")
-root.geometry("1200x700")
+root.state("zoomed")
 root.resizable(False, False)
 
 # TITLE

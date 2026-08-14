@@ -47,14 +47,11 @@ subtitle_label = tk.Label(
 
 subtitle_label.pack(pady=5)
 
-
-# =========================
 # WELCOME
-# =========================
 
 welcome_label = tk.Label(
     root,
-    text="Welcome, Administrator",
+    text="Welcome, Admin",
     font=("Arial", 13)
 )
 
