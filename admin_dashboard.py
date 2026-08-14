@@ -23,7 +23,7 @@ def logout():
 root = tk.Tk()
 
 root.title("StaffSync - Admin Dashboard")
-root.geometry("1000x800")
+root.state("zoomed")
 root.resizable(False, False)
 
 
