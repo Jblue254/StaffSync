@@ -93,12 +93,17 @@ def approve_leave():
     if not confirm:
         return
 
+    # Update leave status in MongoDB
     update_leave_status(
         request_id,
         "Approved"
     )
 
+    # Refresh leave request table
     load_leave_requests()
+
+    # Refresh dashboard statistics
+    refresh_statistics()
 
     messagebox.showinfo(
         "Success",
@@ -147,17 +152,26 @@ def deny_leave():
         return
 
     update_leave_status(
-        request_id,
-        "Denied"
+    request_id,
+    "Denied"
     )
 
     load_leave_requests()
 
+    refresh_statistics()
+
     messagebox.showinfo(
-        "Success",
-        "Leave request denied."
+    "Success",
+    "Leave request denied."
     )
 
+def refresh_statistics():
+    statistics = get_employee_statistics()
+
+    total_value.config(text=str(statistics["total"]))
+    active_value.config(text=str(statistics["active"]))
+    leave_value.config(text=str(statistics["on_leave"]))
+    resigned_value.config(text=str(statistics["resigned"]))
 
 # MAIN WINDOW
 
@@ -225,11 +239,13 @@ total_frame.pack(
     padx=5
 )
 
-tk.Label(
+total_value = tk.Label(
     total_frame,
     text=str(statistics["total"]),
     font=("Arial", 22, "bold")
-).pack()
+)
+
+total_value.pack()
 
 
 # Active
@@ -248,11 +264,12 @@ active_frame.pack(
     padx=5
 )
 
-tk.Label(
+active_value = tk.Label(
     active_frame,
     text=str(statistics["active"]),
     font=("Arial", 22, "bold")
-).pack()
+)
+active_value.pack()
 
 
 # On Leave
@@ -271,12 +288,13 @@ leave_frame.pack(
     padx=5
 )
 
-tk.Label(
+leave_value = tk.Label(
     leave_frame,
     text=str(statistics["on_leave"]),
     font=("Arial", 22, "bold")
-).pack()
+)
 
+leave_value.pack()
 
 # Resigned
 
@@ -294,11 +312,13 @@ resigned_frame.pack(
     padx=5
 )
 
-tk.Label(
+resigned_value = tk.Label(
     resigned_frame,
     text=str(statistics["resigned"]),
     font=("Arial", 22, "bold")
-).pack()
+)
+
+resigned_value.pack()
 
 # EMPLOYEE MANAGEMENT
 

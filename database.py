@@ -192,16 +192,8 @@ def update_leave_status(request_id, status):
 
     from bson.objectid import ObjectId
 
-    # Find the leave request
-    leave_request = leave_collection.find_one(
-        {"_id": ObjectId(request_id)}
-    )
-
-    if leave_request is None:
-        return False
-
-    # Update the leave request
-    leave_collection.update_one(
+    # Update leave request
+    result = leave_collection.update_one(
         {"_id": ObjectId(request_id)},
         {
             "$set": {
@@ -210,18 +202,25 @@ def update_leave_status(request_id, status):
         }
     )
 
-    # If the admin approves the leave
+    # If leave is approved
     if status == "Approved":
 
-        employees_collection.update_one(
-            {
-                "employee_id": leave_request["employee_id"]
-            },
-            {
-                "$set": {
-                    "status": "On Leave"
-                }
-            }
+        leave_request = leave_collection.find_one(
+            {"_id": ObjectId(request_id)}
         )
 
-    return True
+        if leave_request:
+
+            employee_id = leave_request["employee_id"]
+
+            # Change employee status
+            employees_collection.update_one(
+                {"employee_id": employee_id},
+                {
+                    "$set": {
+                        "status": "On Leave"
+                    }
+                }
+            )
+
+    return result
