@@ -1,9 +1,11 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 
 from database import (
     get_employee_by_id,
-    change_password
+    change_password,
+    create_leave_request,
+    get_employee_leave_requests
 )
 
 
@@ -12,19 +14,18 @@ def start_dashboard(employee_id, username):
     root = tk.Tk()
 
     root.title("StaffSync - Employee Dashboard")
-    root.geometry("700x550")
+    root.geometry("850x700")
     root.resizable(False, False)
 
     # LOGOUT
 
-
     def logout():
+
         root.destroy()
 
         import login
 
     # CHANGE PASSWORD
-
 
     def open_change_password():
 
@@ -141,8 +142,181 @@ def start_dashboard(employee_id, username):
             command=update_password
         ).pack(pady=20)
 
-    # GET EMPLOYEE
+    # REQUEST LEAVE
+
+    def open_leave_request():
+
+        leave_window = tk.Toplevel(root)
+
+        leave_window.title("Request Leave")
+        leave_window.geometry("450x500")
+        leave_window.resizable(False, False)
+
+        tk.Label(
+            leave_window,
+            text="Request Leave",
+            font=("Arial", 20, "bold")
+        ).pack(pady=20)
+
+        # Leave Type
+
+        tk.Label(
+            leave_window,
+            text="Leave Type"
+        ).pack()
+
+        leave_type_combobox = ttk.Combobox(
+            leave_window,
+            values=[
+                "Annual Leave",
+                "Sick Leave",
+                "Maternity Leave",
+                "Paternity Leave",
+                "Emergency Leave",
+                "Unpaid Leave"
+            ],
+            width=30,
+            state="readonly"
+        )
+
+        leave_type_combobox.pack(pady=5)
+
+        leave_type_combobox.current(0)
+
+        # Start Date
+
+        tk.Label(
+            leave_window,
+            text="Start Date"
+        ).pack(pady=(10, 0))
+
+        start_date_entry = tk.Entry(
+            leave_window,
+            width=33
+        )
+
+        start_date_entry.pack(pady=5)
+
+        tk.Label(
+            leave_window,
+            text="Example: 2026-08-20"
+        ).pack()
+
+        # End Date
+
+        tk.Label(
+            leave_window,
+            text="End Date"
+        ).pack(pady=(10, 0))
+
+        end_date_entry = tk.Entry(
+            leave_window,
+            width=33
+        )
+
+        end_date_entry.pack(pady=5)
+
+        tk.Label(
+            leave_window,
+            text="Example: 2026-08-25"
+        ).pack()
+
+        # Reason
+
+        tk.Label(
+            leave_window,
+            text="Reason"
+        ).pack(pady=(10, 0))
+
+        reason_entry = tk.Text(
+            leave_window,
+            width=35,
+            height=5
+        )
+
+        reason_entry.pack(pady=5)
+
+        # Submit
+
+        def submit_leave():
+
+            leave_type = leave_type_combobox.get()
+            start_date = start_date_entry.get().strip()
+            end_date = end_date_entry.get().strip()
+            reason = reason_entry.get("1.0", tk.END).strip()
+
+            if not leave_type or not start_date or not end_date or not reason:
+
+                messagebox.showwarning(
+                    "Missing Information",
+                    "Please fill in all fields."
+                )
+
+                return
+
+            leave_data = {
+
+                "employee_id": employee_id,
+
+                "employee_name": employee["name"],
+
+                "leave_type": leave_type,
+
+                "start_date": start_date,
+
+                "end_date": end_date,
+
+                "reason": reason,
+
+                "status": "Pending"
+            }
+
+            create_leave_request(leave_data)
+
+            messagebox.showinfo(
+                "Success",
+                "Your leave request has been submitted.\n\n"
+                "Status: Pending"
+            )
+
+            leave_window.destroy()
+
+            load_leave_requests()
+
+        tk.Button(
+            leave_window,
+            text="Submit Leave Request",
+            width=25,
+            command=submit_leave
+        ).pack(pady=20)
+
  
+    # LOAD LEAVE REQUESTS
+
+
+    def load_leave_requests():
+
+        for item in leave_table.get_children():
+
+            leave_table.delete(item)
+
+        requests = get_employee_leave_requests(employee_id)
+
+        for request in requests:
+
+            leave_table.insert(
+                "",
+                "end",
+                values=(
+                    request.get("leave_type", ""),
+                    request.get("start_date", ""),
+                    request.get("end_date", ""),
+                    request.get("reason", ""),
+                    request.get("status", "")
+                )
+            )
+
+    # GET EMPLOYEE
 
     employee = get_employee_by_id(employee_id)
 
@@ -154,6 +328,7 @@ def start_dashboard(employee_id, username):
         )
 
         root.destroy()
+
         return
 
     # TITLE
@@ -162,10 +337,9 @@ def start_dashboard(employee_id, username):
         root,
         text="STAFFSYNC",
         font=("Arial", 26, "bold")
-    ).pack(pady=20)
+    ).pack(pady=(15, 5))
 
     # WELCOME
-
 
     tk.Label(
         root,
@@ -179,20 +353,18 @@ def start_dashboard(employee_id, username):
         font=("Arial", 12)
     ).pack(pady=5)
 
-    # =========================
     # PROFILE
-    # =========================
-
+ 
     profile_frame = tk.LabelFrame(
         root,
         text="My Profile",
         padx=30,
-        pady=20
+        pady=15
     )
 
     profile_frame.pack(
         padx=40,
-        pady=20,
+        pady=15,
         fill="x"
     )
 
@@ -206,7 +378,7 @@ def start_dashboard(employee_id, username):
         row=0,
         column=0,
         sticky="w",
-        pady=8
+        pady=5
     )
 
     tk.Label(
@@ -217,7 +389,7 @@ def start_dashboard(employee_id, username):
         column=1,
         sticky="w",
         padx=30,
-        pady=8
+        pady=5
     )
 
     # Full Name
@@ -230,7 +402,7 @@ def start_dashboard(employee_id, username):
         row=1,
         column=0,
         sticky="w",
-        pady=8
+        pady=5
     )
 
     tk.Label(
@@ -241,7 +413,7 @@ def start_dashboard(employee_id, username):
         column=1,
         sticky="w",
         padx=30,
-        pady=8
+        pady=5
     )
 
     # Department
@@ -254,7 +426,7 @@ def start_dashboard(employee_id, username):
         row=2,
         column=0,
         sticky="w",
-        pady=8
+        pady=5
     )
 
     tk.Label(
@@ -265,7 +437,7 @@ def start_dashboard(employee_id, username):
         column=1,
         sticky="w",
         padx=30,
-        pady=8
+        pady=5
     )
 
     # Salary
@@ -278,7 +450,7 @@ def start_dashboard(employee_id, username):
         row=3,
         column=0,
         sticky="w",
-        pady=8
+        pady=5
     )
 
     tk.Label(
@@ -289,7 +461,7 @@ def start_dashboard(employee_id, username):
         column=1,
         sticky="w",
         padx=30,
-        pady=8
+        pady=5
     )
 
     # Status
@@ -302,7 +474,7 @@ def start_dashboard(employee_id, username):
         row=4,
         column=0,
         sticky="w",
-        pady=8
+        pady=5
     )
 
     tk.Label(
@@ -313,29 +485,120 @@ def start_dashboard(employee_id, username):
         column=1,
         sticky="w",
         padx=30,
-        pady=8
+        pady=5
     )
 
     # BUTTONS
-  
+
+    button_frame = tk.Frame(root)
+
+    button_frame.pack(pady=10)
 
     change_password_button = tk.Button(
-        root,
+        button_frame,
         text="Change Password",
         width=20,
         command=open_change_password
     )
 
-    change_password_button.pack(pady=10)
+    change_password_button.grid(
+        row=0,
+        column=0,
+        padx=5
+    )
+
+    leave_button = tk.Button(
+        button_frame,
+        text="Request Leave",
+        width=20,
+        command=open_leave_request
+    )
+
+    leave_button.grid(
+        row=0,
+        column=1,
+        padx=5
+    )
 
     logout_button = tk.Button(
-        root,
+        button_frame,
         text="Logout",
         width=20,
         command=logout
     )
 
-    logout_button.pack(pady=5)
+    logout_button.grid(
+        row=0,
+        column=2,
+        padx=5
+    )
+
+    # LEAVE REQUESTS
+
+    leave_frame = tk.LabelFrame(
+        root,
+        text="My Leave Requests",
+        padx=10,
+        pady=10
+    )
+
+    leave_frame.pack(
+        padx=40,
+        pady=10,
+        fill="both",
+        expand=True
+    )
+
+    columns = (
+        "Leave Type",
+        "Start Date",
+        "End Date",
+        "Reason",
+        "Status"
+    )
+
+    leave_table = ttk.Treeview(
+        leave_frame,
+        columns=columns,
+        show="headings",
+        height=6
+    )
+
+    for column in columns:
+
+        leave_table.heading(
+            column,
+            text=column
+        )
+
+        leave_table.column(
+            column,
+            width=130
+        )
+
+    scrollbar = ttk.Scrollbar(
+        leave_frame,
+        orient="vertical",
+        command=leave_table.yview
+    )
+
+    leave_table.configure(
+        yscrollcommand=scrollbar.set
+    )
+
+    scrollbar.pack(
+        side="right",
+        fill="y"
+    )
+
+    leave_table.pack(
+        fill="both",
+        expand=True
+    )
+
+    # LOAD REQUESTS
+
+    load_leave_requests()
 
     # RUN
 
