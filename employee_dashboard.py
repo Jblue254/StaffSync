@@ -10,10 +10,6 @@ from database import (
 
 )
 
-# -----------------------------------------------------------------
-# STYLE CONSTANTS (same palette as the other StaffSync screens)
-# -----------------------------------------------------------------
-
 COLOR_BG = "#F1F5F9"          # page background
 COLOR_CARD = "#FFFFFF"        # card / panel background
 COLOR_BORDER = "#CBD5E1"      # card border

@@ -10,9 +10,6 @@ from database import (
     get_all_payments
 )
 
-# -----------------------------------------------------------------
-# STYLE CONSTANTS
-# -----------------------------------------------------------------
 
 COLOR_BG = "#F1F5F9"          # page background
 COLOR_CARD = "#FFFFFF"        # card / panel background

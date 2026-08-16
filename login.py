@@ -3,9 +3,6 @@ from tkinter import messagebox
 
 from database import login_user
 
-# -----------------------------------------------------------------
-# STYLE CONSTANTS (same palette as the other StaffSync screens)
-# -----------------------------------------------------------------
 
 COLOR_BG = "#F1F5F9"          # page background
 COLOR_CARD = "#FFFFFF"        # card / panel background
