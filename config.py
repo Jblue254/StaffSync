@@ -7,3 +7,5 @@ EMPLOYEE_COLLECTION = "employees"
 USER_COLLECTION = "users"
 
 DEPARTMENT_COLLECTION = "departments"
+
+LEAVE_COLLECTION = "leave_requests"
