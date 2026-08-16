@@ -1,4 +1,4 @@
-# StaffSync
+<img width="1914" height="1075" alt="image" src="https://github.com/user-attachments/assets/e92ba649-988e-485e-b970-cae27d3f3624" /># StaffSync
 
 **StaffSync** is a desktop-based Employee Management System built with **Python, Tkinter, and MongoDB**. It provides separate dashboards for administrators and employees, allowing organizations to manage employee records, departments, leave requests, and salary payments.
 
@@ -162,7 +162,8 @@ StaffSync/
 
 <!-- Add your login screenshot here -->
 
-![StaffSync Login](screenshots/login.png)
+<img width="316" height="278" alt="image" src="https://github.com/user-attachments/assets/be95718e-d0f9-4aaf-8721-cf41e2d0e92b" />
+
 
 ---
 
@@ -170,41 +171,19 @@ StaffSync/
 
 <!-- Add your admin dashboard screenshot here -->
 
-![Admin Dashboard](screenshots/admin-dashboard.png)
+![Admin Dashboard](<img width="956" height="500" alt="image" src="https://github.com/user-attachments/assets/05aae488-61c8-444d-9e09-cd46761303b8" />)
 
 ---
 
-##  Employee Management
-
-<!-- Add your employee management screenshot here -->
-
-![Employee Management](screenshots/employee-management.png)
-
----
 
 ##  Employee Dashboard
 
 <!-- Add your employee dashboard screenshot here -->
 
-![Employee Dashboard](screenshots/employee-dashboard.png)
+![Employee Dashboard](<img width="946" height="507" alt="image" src="https://github.com/user-attachments/assets/0ba52c9c-9958-4b86-b72c-27a417e1225d" />)
 
 ---
 
-##  Leave Request
-
-<!-- Add your leave request screenshot here -->
-
-![Leave Request](screenshots/leave-request.png)
-
----
-
-##  Payment Management
-
-<!-- Add your payment management screenshot here -->
-
-![Payment Management](screenshots/payment-management.png)
-
----
 
 #  Getting Started
 
