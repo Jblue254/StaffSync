@@ -15,7 +15,7 @@ def start_dashboard(employee_id, username):
 
     root.title("StaffSync - Employee Dashboard")
     root.geometry("850x700")
-    root.resizable(False, False)
+    root.resizable(True, True)
 
     # LOGOUT
 

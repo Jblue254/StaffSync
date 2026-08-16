@@ -164,8 +164,8 @@ def deny_leave():
 root = tk.Tk()
 
 root.title("StaffSync - Admin Dashboard")
-root.geometry("1100x750")
-root.resizable(False, False)
+root.geometry("1000x750")
+root.resizable(True, True)
 
 # TITLE
 
@@ -190,7 +190,7 @@ subtitle_label.pack(pady=5)
 
 welcome_label = tk.Label(
     root,
-    text="Welcome, Administrator",
+    text="Welcome, Admin",
     font=("Arial", 13)
 )
 
@@ -371,7 +371,7 @@ leave_table = ttk.Treeview(
     leave_requests_frame,
     columns=columns,
     show="headings",
-    height=8
+    height=5
 )
 
 
