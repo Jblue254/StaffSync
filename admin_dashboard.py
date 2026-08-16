@@ -6,10 +6,34 @@ from database import (
     get_all_leave_requests,
     update_leave_status,
     get_all_employees,
-    create_payment
+    create_payment,
+    get_all_payments
 )
 
 # FUNCTIONS
+
+def fill_employee_salary(event=None):
+
+    employee_id = payment_employee_combobox.get()
+
+    if not employee_id:
+        return
+
+    employees = get_all_employees()
+
+    for employee in employees:
+
+        if employee["employee_id"] == employee_id:
+
+            payment_amount_entry.delete(0, tk.END)
+
+            payment_amount_entry.insert(
+                0,
+                employee["salary"]
+            )
+
+            break
+
 
 def load_payment_employees():
 
@@ -27,6 +51,7 @@ def load_payment_employees():
 
     if employee_ids:
         payment_employee_combobox.current(0)
+        fill_employee_salary()
 
 def open_employee_management():
 
@@ -241,6 +266,8 @@ def record_payment():
 
     create_payment(payment_data)
 
+    load_payments()
+
     messagebox.showinfo(
         "Success",
         "Payment recorded successfully."
@@ -250,6 +277,28 @@ def record_payment():
     payment_amount_entry.delete(0, tk.END)
 
     payment_status_combobox.current(0)
+
+def load_payments():
+
+    payment_table.delete(
+        *payment_table.get_children()
+    )
+
+    payments = get_all_payments()
+
+    for payment in payments:
+
+        payment_table.insert(
+            "",
+            "end",
+            values=(
+                payment.get("employee_id", ""),
+                payment.get("employee_name", ""),
+                payment.get("month", ""),
+                payment.get("amount", ""),
+                payment.get("status", "")
+            )
+        )
 
 def refresh_statistics():
     statistics = get_employee_statistics()
@@ -332,7 +381,6 @@ total_value = tk.Label(
 )
 
 total_value.pack()
-
 
 # Active
 
@@ -485,6 +533,11 @@ payment_employee_combobox.grid(
     pady=5
 )
 
+payment_employee_combobox.bind(
+    "<<ComboboxSelected>>",
+    fill_employee_salary
+)
+
 # Month
 
 tk.Label(
@@ -582,6 +635,87 @@ record_payment_button.grid(
     columnspan=4,
     pady=10
 )
+
+# PAYMENT HISTORY
+
+payment_history_frame = tk.LabelFrame(
+    root,
+    text="Payment History",
+    padx=10,
+    pady=10
+)
+
+payment_history_frame.pack(
+    padx=30,
+    pady=10,
+    fill="both",
+    expand=True
+)
+
+# TABLE COLUMNS
+
+payment_columns = (
+    "Employee ID",
+    "Employee Name",
+    "Month",
+    "Amount",
+    "Status"
+)
+
+payment_table = ttk.Treeview(
+    payment_history_frame,
+    columns=payment_columns,
+    show="headings",
+    height=5
+)
+
+for column in payment_columns:
+
+    payment_table.heading(
+        column,
+        text=column
+    )
+
+    payment_table.column(
+        column,
+        width=140
+    )
+
+# Scrollbar
+
+payment_scrollbar = ttk.Scrollbar(
+    payment_history_frame,
+    orient="vertical",
+    command=payment_table.yview
+)
+
+payment_table.configure(
+    yscrollcommand=payment_scrollbar.set
+)
+
+payment_scrollbar.pack(
+    side="right",
+    fill="y"
+)
+
+payment_table.pack(
+    fill="both",
+    expand=True
+)
+
+# Refresh Payments Button
+
+refresh_payments_button = tk.Button(
+    payment_history_frame,
+    text="Refresh Payments",
+    width=20,
+    command=load_payments
+)
+
+refresh_payments_button.pack(
+    pady=5
+)
+
 # LEAVE REQUESTS
 
 leave_requests_frame = tk.LabelFrame(
@@ -725,11 +859,11 @@ logout_button.pack(
     pady=5
 )
 
-# LOAD LEAVE REQUESTS
-
 load_leave_requests()
 
 load_payment_employees()
+
+load_payments()
 # RUN
 
 if __name__ == "__main__":
