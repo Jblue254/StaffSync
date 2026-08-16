@@ -5,7 +5,8 @@ from config import (
     DATABASE_NAME,
     EMPLOYEE_COLLECTION,
     USER_COLLECTION,
-    DEPARTMENT_COLLECTION
+    DEPARTMENT_COLLECTION,
+    LEAVE_COLLECTION
 )
 
 client = MongoClient(MONGO_URI)
@@ -15,6 +16,7 @@ db = client[DATABASE_NAME]
 employees_collection = db[EMPLOYEE_COLLECTION]
 users_collection = db[USER_COLLECTION]
 departments_collection = db[DEPARTMENT_COLLECTION]
+leave_collection = db[LEAVE_COLLECTION]
 
 
 # EMPLOYEE FUNCTIONS
@@ -164,3 +166,38 @@ def search_employees(keyword):
     })
 
     return list(employees)
+    
+# LEAVE FUNCTIONS
+
+def create_leave_request(leave_data):
+    return leave_collection.insert_one(leave_data)
+
+
+def get_employee_leave_requests(employee_id):
+
+    return list(
+        leave_collection.find(
+            {"employee_id": employee_id}
+        )
+    )
+
+
+def get_all_leave_requests():
+
+    return list(
+        leave_collection.find()
+    )
+
+
+def update_leave_status(request_id, status):
+
+    from bson.objectid import ObjectId
+
+    return leave_collection.update_one(
+        {"_id": ObjectId(request_id)},
+        {
+            "$set": {
+                "status": status
+            }
+        }
+    )
