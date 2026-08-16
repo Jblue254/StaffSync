@@ -1,5 +1,3 @@
-<img width="1914" height="1075" alt="image" src="https://github.com/user-attachments/assets/e92ba649-988e-485e-b970-cae27d3f3624" /># StaffSync
-
 **StaffSync** is a desktop-based Employee Management System built with **Python, Tkinter, and MongoDB**. It provides separate dashboards for administrators and employees, allowing organizations to manage employee records, departments, leave requests, and salary payments.
 
 ## Project Overview
