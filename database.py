@@ -6,7 +6,8 @@ from config import (
     EMPLOYEE_COLLECTION,
     USER_COLLECTION,
     DEPARTMENT_COLLECTION,
-    LEAVE_COLLECTION
+    LEAVE_COLLECTION,
+    PAYMENT_COLLECTION
 )
 
 client = MongoClient(MONGO_URI)
@@ -17,6 +18,7 @@ employees_collection = db[EMPLOYEE_COLLECTION]
 users_collection = db[USER_COLLECTION]
 departments_collection = db[DEPARTMENT_COLLECTION]
 leave_collection = db[LEAVE_COLLECTION]
+payments_collection = db[PAYMENT_COLLECTION]
 
 
 # EMPLOYEE FUNCTIONS
@@ -224,3 +226,22 @@ def update_leave_status(request_id, status):
             )
 
     return result
+
+# PAYMENT FUNCTIONS
+
+def create_payment(payment_data):
+    return payments_collection.insert_one(payment_data)
+
+
+def get_all_payments():
+    return list(
+        payments_collection.find()
+    )
+
+
+def get_employee_payments(employee_id):
+    return list(
+        payments_collection.find(
+            {"employee_id": employee_id}
+        )
+    )
