@@ -10,6 +10,145 @@ from database import (
     get_all_payments
 )
 
+# -----------------------------------------------------------------
+# STYLE CONSTANTS
+# -----------------------------------------------------------------
+
+COLOR_BG = "#F1F5F9"          # page background
+COLOR_CARD = "#FFFFFF"        # card / panel background
+COLOR_BORDER = "#CBD5E1"      # card border
+COLOR_TEXT = "#0F172A"        # main text
+COLOR_MUTED = "#64748B"       # secondary text
+
+COLOR_PRIMARY = "#2563EB"
+COLOR_PRIMARY_DARK = "#1E40AF"
+COLOR_SUCCESS = "#16A34A"
+COLOR_SUCCESS_DARK = "#15803D"
+COLOR_DANGER = "#DC2626"
+COLOR_DANGER_DARK = "#B91C1C"
+COLOR_NEUTRAL = "#E2E8F0"
+COLOR_NEUTRAL_DARK = "#CBD5E1"
+
+# Fonts unchanged from the original file
+FONT_TITLE = ("Arial", 26, "bold")
+FONT_SUBTITLE = ("Arial", 16)
+FONT_WELCOME = ("Arial", 13)
+FONT_STAT_VALUE = ("Arial", 22, "bold")
+
+
+def styled_button(parent, text, command, bg=COLOR_PRIMARY, active_bg=COLOR_PRIMARY_DARK, width=20):
+
+    return tk.Button(
+        parent,
+        text=text,
+        command=command,
+        width=width,
+        bg=bg,
+        fg="white",
+        activebackground=active_bg,
+        activeforeground="white",
+        relief="flat",
+        bd=0,
+        cursor="hand2",
+        padx=8,
+        pady=6
+    )
+
+
+def styled_labelframe(parent, text, **kwargs):
+
+    return tk.LabelFrame(
+        parent,
+        text=text,
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT,
+        bd=1,
+        relief="solid",
+        highlightbackground=COLOR_BORDER,
+        **kwargs
+    )
+
+
+def styled_entry(parent, **kwargs):
+
+    return tk.Entry(
+        parent,
+        bg="white",
+        fg=COLOR_TEXT,
+        relief="solid",
+        bd=1,
+        highlightthickness=1,
+        highlightbackground=COLOR_BORDER,
+        highlightcolor=COLOR_PRIMARY,
+        **kwargs
+    )
+
+
+def configure_ttk_style():
+
+    style = ttk.Style()
+
+    style.theme_use("clam")
+
+    # Treeview
+
+    style.configure(
+        "Treeview",
+        background=COLOR_CARD,
+        fieldbackground=COLOR_CARD,
+        foreground=COLOR_TEXT,
+        rowheight=28,
+        borderwidth=0
+    )
+
+    style.configure(
+        "Treeview.Heading",
+        background=COLOR_PRIMARY,
+        foreground="white",
+        relief="flat"
+    )
+
+    style.map(
+        "Treeview.Heading",
+        background=[("active", COLOR_PRIMARY_DARK)]
+    )
+
+    style.map(
+        "Treeview",
+        background=[("selected", COLOR_PRIMARY)],
+        foreground=[("selected", "white")]
+    )
+
+    # Combobox
+
+    style.configure(
+        "TCombobox",
+        fieldbackground="white",
+        background="white",
+        foreground=COLOR_TEXT,
+        arrowcolor=COLOR_PRIMARY,
+        bordercolor=COLOR_BORDER,
+        padding=4
+    )
+
+    style.map(
+        "TCombobox",
+        fieldbackground=[("readonly", "white")],
+        foreground=[("readonly", COLOR_TEXT)]
+    )
+
+    # Scrollbar
+
+    style.configure(
+        "Vertical.TScrollbar",
+        background=COLOR_NEUTRAL,
+        troughcolor=COLOR_BG,
+        bordercolor=COLOR_BG,
+        arrowcolor=COLOR_MUTED,
+        relief="flat"
+    )
+
+
 # FUNCTIONS
 
 def fill_employee_salary(event=None):
@@ -315,13 +454,18 @@ root = tk.Tk()
 root.title("StaffSync - Admin Dashboard")
 root.geometry("1000x750")
 root.resizable(True, True)
+root.configure(bg=COLOR_BG)
+
+configure_ttk_style()
 
 # TITLE
 
 title_label = tk.Label(
     root,
     text="STAFFSYNC",
-    font=("Arial", 26, "bold")
+    font=FONT_TITLE,
+    bg=COLOR_BG,
+    fg=COLOR_TEXT
 )
 
 title_label.pack(pady=(15, 5))
@@ -330,7 +474,9 @@ title_label.pack(pady=(15, 5))
 subtitle_label = tk.Label(
     root,
     text="Admin Dashboard",
-    font=("Arial", 16)
+    font=FONT_SUBTITLE,
+    bg=COLOR_BG,
+    fg=COLOR_MUTED
 )
 
 subtitle_label.pack(pady=5)
@@ -340,7 +486,9 @@ subtitle_label.pack(pady=5)
 welcome_label = tk.Label(
     root,
     text="Welcome, Admin",
-    font=("Arial", 13)
+    font=FONT_WELCOME,
+    bg=COLOR_BG,
+    fg=COLOR_MUTED
 )
 
 welcome_label.pack(pady=5)
@@ -349,7 +497,7 @@ welcome_label.pack(pady=5)
 
 statistics = get_employee_statistics()
 
-stats_frame = tk.Frame(root)
+stats_frame = tk.Frame(root, bg=COLOR_BG)
 
 stats_frame.pack(
     fill="x",
@@ -360,7 +508,7 @@ stats_frame.pack(
 
 # Total Employees
 
-total_frame = tk.LabelFrame(
+total_frame = styled_labelframe(
     stats_frame,
     text="Total Employees",
     padx=20,
@@ -377,14 +525,16 @@ total_frame.pack(
 total_value = tk.Label(
     total_frame,
     text=str(statistics["total"]),
-    font=("Arial", 22, "bold")
+    font=FONT_STAT_VALUE,
+    bg=COLOR_CARD,
+    fg=COLOR_PRIMARY
 )
 
 total_value.pack()
 
 # Active
 
-active_frame = tk.LabelFrame(
+active_frame = styled_labelframe(
     stats_frame,
     text="Active Employees",
     padx=20,
@@ -401,14 +551,16 @@ active_frame.pack(
 active_value = tk.Label(
     active_frame,
     text=str(statistics["active"]),
-    font=("Arial", 22, "bold")
+    font=FONT_STAT_VALUE,
+    bg=COLOR_CARD,
+    fg=COLOR_SUCCESS
 )
 active_value.pack()
 
 
 # On Leave
 
-leave_frame = tk.LabelFrame(
+leave_frame = styled_labelframe(
     stats_frame,
     text="On Leave",
     padx=20,
@@ -425,14 +577,16 @@ leave_frame.pack(
 leave_value = tk.Label(
     leave_frame,
     text=str(statistics["on_leave"]),
-    font=("Arial", 22, "bold")
+    font=FONT_STAT_VALUE,
+    bg=COLOR_CARD,
+    fg="#D97706"
 )
 
 leave_value.pack()
 
 # Resigned
 
-resigned_frame = tk.LabelFrame(
+resigned_frame = styled_labelframe(
     stats_frame,
     text="Resigned",
     padx=20,
@@ -449,14 +603,16 @@ resigned_frame.pack(
 resigned_value = tk.Label(
     resigned_frame,
     text=str(statistics["resigned"]),
-    font=("Arial", 22, "bold")
+    font=FONT_STAT_VALUE,
+    bg=COLOR_CARD,
+    fg=COLOR_DANGER
 )
 
 resigned_value.pack()
 
 # EMPLOYEE MANAGEMENT
 
-management_frame = tk.LabelFrame(
+management_frame = styled_labelframe(
     root,
     text="Employee Management",
     padx=20,
@@ -473,18 +629,20 @@ management_frame.pack(
 tk.Label(
     management_frame,
     text="Manage employee records.",
-    font=("Arial", 11)
+    bg=COLOR_CARD,
+    fg=COLOR_TEXT
 ).pack(
     side="left",
     padx=10
 )
 
 
-manage_button = tk.Button(
+manage_button = styled_button(
     management_frame,
     text="Manage Employees",
-    width=20,
-    command=open_employee_management
+    command=open_employee_management,
+    bg=COLOR_PRIMARY,
+    active_bg=COLOR_PRIMARY_DARK
 )
 
 manage_button.pack(
@@ -494,7 +652,7 @@ manage_button.pack(
 
 # PAYMENT MANAGEMENT
 
-payment_frame = tk.LabelFrame(
+payment_frame = styled_labelframe(
     root,
     text="Payment Management",
     padx=15,
@@ -511,7 +669,9 @@ payment_frame.pack(
 
 tk.Label(
     payment_frame,
-    text="Employee"
+    text="Employee",
+    bg=COLOR_CARD,
+    fg=COLOR_TEXT
 ).grid(
     row=0,
     column=0,
@@ -523,7 +683,7 @@ tk.Label(
 payment_employee_combobox = ttk.Combobox(
     payment_frame,
     width=20,
-    state="readonly"
+    state="readonly",
 )
 
 payment_employee_combobox.grid(
@@ -542,7 +702,9 @@ payment_employee_combobox.bind(
 
 tk.Label(
     payment_frame,
-    text="Month"
+    text="Month",
+    bg=COLOR_CARD,
+    fg=COLOR_TEXT
 ).grid(
     row=0,
     column=2,
@@ -551,7 +713,7 @@ tk.Label(
     sticky="w"
 )
 
-payment_month_entry = tk.Entry(
+payment_month_entry = styled_entry(
     payment_frame,
     width=20
 )
@@ -567,7 +729,9 @@ payment_month_entry.grid(
 
 tk.Label(
     payment_frame,
-    text="Amount"
+    text="Amount",
+    bg=COLOR_CARD,
+    fg=COLOR_TEXT
 ).grid(
     row=1,
     column=0,
@@ -576,7 +740,7 @@ tk.Label(
     sticky="w"
 )
 
-payment_amount_entry = tk.Entry(
+payment_amount_entry = styled_entry(
     payment_frame,
     width=20
 )
@@ -592,7 +756,9 @@ payment_amount_entry.grid(
 
 tk.Label(
     payment_frame,
-    text="Status"
+    text="Status",
+    bg=COLOR_CARD,
+    fg=COLOR_TEXT
 ).grid(
     row=1,
     column=2,
@@ -608,7 +774,7 @@ payment_status_combobox = ttk.Combobox(
         "Pending"
     ],
     width=18,
-    state="readonly"
+    state="readonly",
 )
 
 payment_status_combobox.grid(
@@ -622,11 +788,12 @@ payment_status_combobox.current(0)
 
 # Record Payment Button
 
-record_payment_button = tk.Button(
+record_payment_button = styled_button(
     payment_frame,
     text="Record Payment",
-    width=20,
-    command=record_payment
+    command=record_payment,
+    bg=COLOR_PRIMARY,
+    active_bg=COLOR_PRIMARY_DARK
 )
 
 record_payment_button.grid(
@@ -638,7 +805,7 @@ record_payment_button.grid(
 
 # PAYMENT HISTORY
 
-payment_history_frame = tk.LabelFrame(
+payment_history_frame = styled_labelframe(
     root,
     text="Payment History",
     padx=10,
@@ -705,12 +872,15 @@ payment_table.pack(
 
 # Refresh Payments Button
 
-refresh_payments_button = tk.Button(
+refresh_payments_button = styled_button(
     payment_history_frame,
     text="Refresh Payments",
-    width=20,
-    command=load_payments
+    command=load_payments,
+    bg=COLOR_NEUTRAL,
+    active_bg=COLOR_NEUTRAL_DARK
 )
+
+refresh_payments_button.config(fg=COLOR_TEXT, activeforeground=COLOR_TEXT)
 
 refresh_payments_button.pack(
     pady=5
@@ -718,7 +888,7 @@ refresh_payments_button.pack(
 
 # LEAVE REQUESTS
 
-leave_requests_frame = tk.LabelFrame(
+leave_requests_frame = styled_labelframe(
     root,
     text="Employee Leave Requests",
     padx=10,
@@ -797,7 +967,8 @@ leave_table.pack(
 # LEAVE BUTTONS
 
 leave_button_frame = tk.Frame(
-    root
+    root,
+    bg=COLOR_BG
 )
 
 leave_button_frame.pack(
@@ -805,11 +976,12 @@ leave_button_frame.pack(
 )
 
 
-approve_button = tk.Button(
+approve_button = styled_button(
     leave_button_frame,
     text="Approve Leave",
-    width=20,
-    command=approve_leave
+    command=approve_leave,
+    bg=COLOR_SUCCESS,
+    active_bg=COLOR_SUCCESS_DARK
 )
 
 approve_button.grid(
@@ -819,11 +991,12 @@ approve_button.grid(
 )
 
 
-deny_button = tk.Button(
+deny_button = styled_button(
     leave_button_frame,
     text="Deny Leave",
-    width=20,
-    command=deny_leave
+    command=deny_leave,
+    bg=COLOR_DANGER,
+    active_bg=COLOR_DANGER_DARK
 )
 
 deny_button.grid(
@@ -833,12 +1006,15 @@ deny_button.grid(
 )
 
 
-refresh_button = tk.Button(
+refresh_button = styled_button(
     leave_button_frame,
     text="Refresh Requests",
-    width=20,
-    command=load_leave_requests
+    command=load_leave_requests,
+    bg=COLOR_NEUTRAL,
+    active_bg=COLOR_NEUTRAL_DARK
 )
+
+refresh_button.config(fg=COLOR_TEXT, activeforeground=COLOR_TEXT)
 
 refresh_button.grid(
     row=0,
@@ -848,11 +1024,12 @@ refresh_button.grid(
 
 # LOGOUT
 
-logout_button = tk.Button(
+logout_button = styled_button(
     root,
     text="Logout",
-    width=20,
-    command=logout
+    command=logout,
+    bg=COLOR_DANGER,
+    active_bg=COLOR_DANGER_DARK
 )
 
 logout_button.pack(

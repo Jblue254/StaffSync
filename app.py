@@ -12,6 +12,142 @@ from database import (
     search_employees
 )
 
+# -----------------------------------------------------------------
+# STYLE CONSTANTS (same palette as the admin dashboard)
+# -----------------------------------------------------------------
+
+COLOR_BG = "#F1F5F9"          # page background
+COLOR_CARD = "#FFFFFF"        # card / panel background
+COLOR_BORDER = "#CBD5E1"      # card border
+COLOR_TEXT = "#0F172A"        # main text
+COLOR_MUTED = "#64748B"       # secondary text
+
+COLOR_PRIMARY = "#2563EB"
+COLOR_PRIMARY_DARK = "#1E40AF"
+COLOR_SUCCESS = "#16A34A"
+COLOR_SUCCESS_DARK = "#15803D"
+COLOR_DANGER = "#DC2626"
+COLOR_DANGER_DARK = "#B91C1C"
+COLOR_NEUTRAL = "#E2E8F0"
+COLOR_NEUTRAL_DARK = "#CBD5E1"
+
+# Fonts unchanged from the original file
+FONT_TITLE = ("Arial", 20, "bold")
+
+
+def styled_button(parent, text, command, bg=COLOR_PRIMARY, active_bg=COLOR_PRIMARY_DARK, width=25):
+
+    return tk.Button(
+        parent,
+        text=text,
+        command=command,
+        width=width,
+        bg=bg,
+        fg="white",
+        activebackground=active_bg,
+        activeforeground="white",
+        relief="flat",
+        bd=0,
+        cursor="hand2",
+        padx=8,
+        pady=6
+    )
+
+
+def styled_labelframe(parent, text, **kwargs):
+
+    return tk.LabelFrame(
+        parent,
+        text=text,
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT,
+        bd=1,
+        relief="solid",
+        highlightbackground=COLOR_BORDER,
+        **kwargs
+    )
+
+
+def styled_entry(parent, **kwargs):
+
+    return tk.Entry(
+        parent,
+        bg="white",
+        fg=COLOR_TEXT,
+        relief="solid",
+        bd=1,
+        highlightthickness=1,
+        highlightbackground=COLOR_BORDER,
+        highlightcolor=COLOR_PRIMARY,
+        **kwargs
+    )
+
+
+def configure_ttk_style():
+
+    style = ttk.Style()
+
+    style.theme_use("clam")
+
+    # Treeview
+
+    style.configure(
+        "Treeview",
+        background=COLOR_CARD,
+        fieldbackground=COLOR_CARD,
+        foreground=COLOR_TEXT,
+        rowheight=28,
+        borderwidth=0
+    )
+
+    style.configure(
+        "Treeview.Heading",
+        background=COLOR_PRIMARY,
+        foreground="white",
+        relief="flat"
+    )
+
+    style.map(
+        "Treeview.Heading",
+        background=[("active", COLOR_PRIMARY_DARK)]
+    )
+
+    style.map(
+        "Treeview",
+        background=[("selected", COLOR_PRIMARY)],
+        foreground=[("selected", "white")]
+    )
+
+    # Combobox
+
+    style.configure(
+        "TCombobox",
+        fieldbackground="white",
+        background="white",
+        foreground=COLOR_TEXT,
+        arrowcolor=COLOR_PRIMARY,
+        bordercolor=COLOR_BORDER,
+        padding=4
+    )
+
+    style.map(
+        "TCombobox",
+        fieldbackground=[("readonly", "white")],
+        foreground=[("readonly", COLOR_TEXT)]
+    )
+
+    # Scrollbar
+
+    style.configure(
+        "Vertical.TScrollbar",
+        background=COLOR_NEUTRAL,
+        troughcolor=COLOR_BG,
+        bordercolor=COLOR_BG,
+        arrowcolor=COLOR_MUTED,
+        relief="flat"
+    )
+
+
 # FUNCTIONS
 
 def select_employee(event):
@@ -75,6 +211,16 @@ def add_employee():
 
     create_user(user_data)
 
+    load_employees()
+
+    clear_fields()
+
+    messagebox.showinfo(
+        "Success",
+        f"Employee added successfully!\n\nEmployee ID: {employee_id}"
+    )
+
+
 def search_employee():
 
     keyword = search_entry.get().strip()
@@ -98,15 +244,6 @@ def search_employee():
                 employee["status"]
             )
         )
-
-    load_employees()
-
-    clear_fields()
-
-    messagebox.showinfo(
-        "Success",
-        f"Employee added successfully!\n\nEmployee ID: {employee_id}"
-    )
 
 
 def update_employee():
@@ -275,42 +412,51 @@ root = tk.Tk()
 root.title("Employee Management System")
 root.state("zoomed")
 root.resizable(False, False)
+root.configure(bg=COLOR_BG)
+
+configure_ttk_style()
 
 # TITLE
 
-title_label = tk.Label(root,text="EMPLOYEE MANAGEMENT SYSTEM",font=("Arial", 20, "bold"))
+title_label = tk.Label(
+    root,
+    text="EMPLOYEE MANAGEMENT SYSTEM",
+    font=FONT_TITLE,
+    bg=COLOR_BG,
+    fg=COLOR_TEXT
+)
 title_label.pack(pady=10)
 
 # MAIN FRAME
 
 
-main_frame = tk.Frame(root)
+main_frame = tk.Frame(root, bg=COLOR_BG)
 main_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
 # FORM FRAME
 
-form_frame = tk.LabelFrame(main_frame,text="Employee Info",padx=10,pady=10)
+form_frame = styled_labelframe(main_frame, text="Employee Info", padx=10, pady=10)
 form_frame.pack(side="left", fill="y")
 
 
 # Full Name
-tk.Label(form_frame,text="Full Name").grid(row=2, column=0, sticky="w")
-name_entry = tk.Entry(form_frame,width=30)
+tk.Label(form_frame, text="Full Name", bg=COLOR_CARD, fg=COLOR_TEXT).grid(row=2, column=0, sticky="w")
+name_entry = styled_entry(form_frame, width=30)
 name_entry.grid(row=3,column=0,pady=5)
 
 # Department
-tk.Label(form_frame,text="Department").grid(row=4, column=0, sticky="w")
+tk.Label(form_frame, text="Department", bg=COLOR_CARD, fg=COLOR_TEXT).grid(row=4, column=0, sticky="w")
 department_combobox = ttk.Combobox(form_frame,width=27,state="readonly")
 department_combobox.grid(row=5,column=0,pady=5)
 
 # Salary
-tk.Label(form_frame,text="Salary").grid(row=6, column=0, sticky="w")
+tk.Label(form_frame, text="Salary", bg=COLOR_CARD, fg=COLOR_TEXT).grid(row=6, column=0, sticky="w")
 
-salary_entry = tk.Entry(form_frame, width=30)
+salary_entry = styled_entry(form_frame, width=30)
 salary_entry.grid(row=7, column=0, pady=5)
 
 # Status
-tk.Label(form_frame,text="Status").grid(row=8, column=0, sticky="w")
+tk.Label(form_frame, text="Status", bg=COLOR_CARD, fg=COLOR_TEXT).grid(row=8, column=0, sticky="w")
 status_combobox = ttk.Combobox(form_frame,values=["Active", "On Leave", "Resigned"],width=27)
 
 status_combobox.grid(row=9, column=0, pady=5)
@@ -318,33 +464,33 @@ status_combobox.current(0)
 
 # Username
 
-tk.Label(form_frame,text="Username").grid(row=10, column=0, sticky="w")
-username_entry = tk.Entry(form_frame,width=30)
+tk.Label(form_frame, text="Username", bg=COLOR_CARD, fg=COLOR_TEXT).grid(row=10, column=0, sticky="w")
+username_entry = styled_entry(form_frame, width=30)
 username_entry.grid(row=11,column=0,pady=5)
 # Temporary Password
 
-tk.Label(form_frame,text="Temporary Password").grid(row=12, column=0, sticky="w")
+tk.Label(form_frame, text="Temporary Password", bg=COLOR_CARD, fg=COLOR_TEXT).grid(row=12, column=0, sticky="w")
 
-password_entry = tk.Entry(form_frame,width=30,show="*")
+password_entry = styled_entry(form_frame, width=30, show="*")
 
 password_entry.grid(row=13,column=0,pady=5)
 
 # Buttons
-add_button = tk.Button(form_frame,text="Add Employee",width=25,command=add_employee)
+add_button = styled_button(form_frame, text="Add Employee", command=add_employee, bg=COLOR_PRIMARY, active_bg=COLOR_PRIMARY_DARK)
 add_button.grid(row=14, column=0, pady=10)
 
-update_button = tk.Button(form_frame,text="Update Employee",width=25,command=update_employee)
+update_button = styled_button(form_frame, text="Update Employee", command=update_employee, bg=COLOR_SUCCESS, active_bg=COLOR_SUCCESS_DARK)
 update_button.grid(row=15, column=0, pady=5)
 
-delete_button = tk.Button(form_frame,text="Delete Employee",width=25,command=delete_employee)
+delete_button = styled_button(form_frame, text="Delete Employee", command=delete_employee, bg=COLOR_DANGER, active_bg=COLOR_DANGER_DARK)
 delete_button.grid(row=16, column=0, pady=5)
 
-logout_button = tk.Button(form_frame,text="Logout",width=25,command=logout)
+logout_button = styled_button(form_frame, text="Logout", command=logout, bg=COLOR_DANGER, active_bg=COLOR_DANGER_DARK)
 logout_button.grid(row=17,column=0,pady=15)
 
 #SEARCH FRAME
 
-search_frame = tk.Frame(main_frame)
+search_frame = tk.Frame(main_frame, bg=COLOR_BG)
 
 search_frame.pack(
     fill="x",
@@ -353,13 +499,15 @@ search_frame.pack(
 
 tk.Label(
     search_frame,
-    text="Search Employee:"
+    text="Search Employee:",
+    bg=COLOR_BG,
+    fg=COLOR_TEXT
 ).pack(
     side="left",
     padx=5
 )
 
-search_entry = tk.Entry(
+search_entry = styled_entry(
     search_frame,
     width=30
 )
@@ -369,10 +517,13 @@ search_entry.pack(
     padx=5
 )
 
-search_button = tk.Button(
+search_button = styled_button(
     search_frame,
     text="Search",
-    command=search_employee
+    command=search_employee,
+    bg=COLOR_PRIMARY,
+    active_bg=COLOR_PRIMARY_DARK,
+    width=12
 )
 
 search_button.pack(
@@ -380,11 +531,16 @@ search_button.pack(
     padx=5
 )
 #RESET BUTTON FOR THE SEARCH BAR
-reset_button = tk.Button(
+reset_button = styled_button(
     search_frame,
     text="Show All",
-    command=load_employees
+    command=load_employees,
+    bg=COLOR_NEUTRAL,
+    active_bg=COLOR_NEUTRAL_DARK,
+    width=12
 )
+
+reset_button.config(fg=COLOR_TEXT, activeforeground=COLOR_TEXT)
 
 reset_button.pack(
     side="left",
@@ -394,7 +550,7 @@ reset_button.pack(
 # TABLE FRAME
 
 
-table_frame = tk.LabelFrame(
+table_frame = styled_labelframe(
     main_frame,
     text="Employee Records",
     padx=10,

@@ -10,12 +10,154 @@ from database import (
 
 )
 
+# -----------------------------------------------------------------
+# STYLE CONSTANTS (same palette as the other StaffSync screens)
+# -----------------------------------------------------------------
+
+COLOR_BG = "#F1F5F9"          # page background
+COLOR_CARD = "#FFFFFF"        # card / panel background
+COLOR_BORDER = "#CBD5E1"      # card border
+COLOR_TEXT = "#0F172A"        # main text
+COLOR_MUTED = "#64748B"       # secondary text
+
+COLOR_PRIMARY = "#2563EB"
+COLOR_PRIMARY_DARK = "#1E40AF"
+COLOR_DANGER = "#DC2626"
+COLOR_DANGER_DARK = "#B91C1C"
+COLOR_NEUTRAL = "#E2E8F0"
+COLOR_NEUTRAL_DARK = "#CBD5E1"
+
+# Fonts unchanged from the original file
+FONT_TITLE = ("Arial", 26, "bold")
+FONT_WELCOME = ("Arial", 18)
+FONT_SUBTITLE = ("Arial", 12)
+FONT_DIALOG_TITLE = ("Arial", 18, "bold")
+FONT_LEAVE_TITLE = ("Arial", 20, "bold")
+FONT_LABEL_BOLD = ("Arial", 11, "bold")
+
+
+def styled_button(parent, text, command, bg=COLOR_PRIMARY, active_bg=COLOR_PRIMARY_DARK, width=20):
+
+    return tk.Button(
+        parent,
+        text=text,
+        command=command,
+        width=width,
+        bg=bg,
+        fg="white",
+        activebackground=active_bg,
+        activeforeground="white",
+        relief="flat",
+        bd=0,
+        cursor="hand2",
+        padx=8,
+        pady=6
+    )
+
+
+def styled_labelframe(parent, text, **kwargs):
+
+    return tk.LabelFrame(
+        parent,
+        text=text,
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT,
+        bd=1,
+        relief="solid",
+        highlightbackground=COLOR_BORDER,
+        **kwargs
+    )
+
+
+def styled_entry(parent, **kwargs):
+
+    return tk.Entry(
+        parent,
+        bg="white",
+        fg=COLOR_TEXT,
+        relief="solid",
+        bd=1,
+        highlightthickness=1,
+        highlightbackground=COLOR_BORDER,
+        highlightcolor=COLOR_PRIMARY,
+        **kwargs
+    )
+
+
+def configure_ttk_style():
+
+    style = ttk.Style()
+
+    style.theme_use("clam")
+
+    # Treeview
+
+    style.configure(
+        "Treeview",
+        background=COLOR_CARD,
+        fieldbackground=COLOR_CARD,
+        foreground=COLOR_TEXT,
+        rowheight=28,
+        borderwidth=0
+    )
+
+    style.configure(
+        "Treeview.Heading",
+        background=COLOR_PRIMARY,
+        foreground="white",
+        relief="flat"
+    )
+
+    style.map(
+        "Treeview.Heading",
+        background=[("active", COLOR_PRIMARY_DARK)]
+    )
+
+    style.map(
+        "Treeview",
+        background=[("selected", COLOR_PRIMARY)],
+        foreground=[("selected", "white")]
+    )
+
+    # Combobox
+
+    style.configure(
+        "TCombobox",
+        fieldbackground="white",
+        background="white",
+        foreground=COLOR_TEXT,
+        arrowcolor=COLOR_PRIMARY,
+        bordercolor=COLOR_BORDER,
+        padding=4
+    )
+
+    style.map(
+        "TCombobox",
+        fieldbackground=[("readonly", "white")],
+        foreground=[("readonly", COLOR_TEXT)]
+    )
+
+    # Scrollbar
+
+    style.configure(
+        "Vertical.TScrollbar",
+        background=COLOR_NEUTRAL,
+        troughcolor=COLOR_BG,
+        bordercolor=COLOR_BG,
+        arrowcolor=COLOR_MUTED,
+        relief="flat"
+    )
+
+
 def start_dashboard(employee_id, username):
 
     root = tk.Tk()
 
     root.title("StaffSync - Employee Dashboard")
     root.resizable(True, True)
+    root.configure(bg=COLOR_BG)
+
+    configure_ttk_style()
 
     try:
         root.state("zoomed")
@@ -39,19 +181,24 @@ def start_dashboard(employee_id, username):
         password_window.title("Change Password")
         password_window.geometry("400x350")
         password_window.resizable(False, False)
+        password_window.configure(bg=COLOR_BG)
 
         tk.Label(
             password_window,
             text="Change Password",
-            font=("Arial", 18, "bold")
+            font=FONT_DIALOG_TITLE,
+            bg=COLOR_BG,
+            fg=COLOR_TEXT
         ).pack(pady=20)
 
         tk.Label(
             password_window,
-            text="Current Password"
+            text="Current Password",
+            bg=COLOR_BG,
+            fg=COLOR_TEXT
         ).pack()
 
-        current_password_entry = tk.Entry(
+        current_password_entry = styled_entry(
             password_window,
             width=30,
             show="*"
@@ -61,10 +208,12 @@ def start_dashboard(employee_id, username):
 
         tk.Label(
             password_window,
-            text="New Password"
+            text="New Password",
+            bg=COLOR_BG,
+            fg=COLOR_TEXT
         ).pack(pady=(10, 0))
 
-        new_password_entry = tk.Entry(
+        new_password_entry = styled_entry(
             password_window,
             width=30,
             show="*"
@@ -74,10 +223,12 @@ def start_dashboard(employee_id, username):
 
         tk.Label(
             password_window,
-            text="Confirm New Password"
+            text="Confirm New Password",
+            bg=COLOR_BG,
+            fg=COLOR_TEXT
         ).pack(pady=(10, 0))
 
-        confirm_password_entry = tk.Entry(
+        confirm_password_entry = styled_entry(
             password_window,
             width=30,
             show="*"
@@ -140,11 +291,11 @@ def start_dashboard(employee_id, username):
 
             password_window.destroy()
 
-        tk.Button(
+        styled_button(
             password_window,
             text="Change Password",
-            width=20,
-            command=update_password
+            command=update_password,
+            width=20
         ).pack(pady=20)
 
     # REQUEST LEAVE
@@ -156,18 +307,23 @@ def start_dashboard(employee_id, username):
         leave_window.title("Request Leave")
         leave_window.geometry("450x500")
         leave_window.resizable(False, False)
+        leave_window.configure(bg=COLOR_BG)
 
         tk.Label(
             leave_window,
             text="Request Leave",
-            font=("Arial", 20, "bold")
+            font=FONT_LEAVE_TITLE,
+            bg=COLOR_BG,
+            fg=COLOR_TEXT
         ).pack(pady=20)
 
         # Leave Type
 
         tk.Label(
             leave_window,
-            text="Leave Type"
+            text="Leave Type",
+            bg=COLOR_BG,
+            fg=COLOR_TEXT
         ).pack()
 
         leave_type_combobox = ttk.Combobox(
@@ -192,10 +348,12 @@ def start_dashboard(employee_id, username):
 
         tk.Label(
             leave_window,
-            text="Start Date"
+            text="Start Date",
+            bg=COLOR_BG,
+            fg=COLOR_TEXT
         ).pack(pady=(10, 0))
 
-        start_date_entry = tk.Entry(
+        start_date_entry = styled_entry(
             leave_window,
             width=33
         )
@@ -204,17 +362,21 @@ def start_dashboard(employee_id, username):
 
         tk.Label(
             leave_window,
-            text="Example: 2026-08-20"
+            text="Example: 2026-08-20",
+            bg=COLOR_BG,
+            fg=COLOR_MUTED
         ).pack()
 
         # End Date
 
         tk.Label(
             leave_window,
-            text="End Date"
+            text="End Date",
+            bg=COLOR_BG,
+            fg=COLOR_TEXT
         ).pack(pady=(10, 0))
 
-        end_date_entry = tk.Entry(
+        end_date_entry = styled_entry(
             leave_window,
             width=33
         )
@@ -223,20 +385,31 @@ def start_dashboard(employee_id, username):
 
         tk.Label(
             leave_window,
-            text="Example: 2026-08-25"
+            text="Example: 2026-08-25",
+            bg=COLOR_BG,
+            fg=COLOR_MUTED
         ).pack()
 
         # Reason
 
         tk.Label(
             leave_window,
-            text="Reason"
+            text="Reason",
+            bg=COLOR_BG,
+            fg=COLOR_TEXT
         ).pack(pady=(10, 0))
 
         reason_entry = tk.Text(
             leave_window,
             width=35,
-            height=5
+            height=5,
+            bg="white",
+            fg=COLOR_TEXT,
+            relief="solid",
+            bd=1,
+            highlightthickness=1,
+            highlightbackground=COLOR_BORDER,
+            highlightcolor=COLOR_PRIMARY
         )
 
         reason_entry.pack(pady=5)
@@ -288,11 +461,11 @@ def start_dashboard(employee_id, username):
 
             load_leave_requests()
 
-        tk.Button(
+        styled_button(
             leave_window,
             text="Submit Leave Request",
-            width=25,
-            command=submit_leave
+            command=submit_leave,
+            width=25
         ).pack(pady=20)
 
  
@@ -357,7 +530,7 @@ def start_dashboard(employee_id, username):
     # (root has a fixed size, so without this, content below the
     # visible area - like the payment table - never shows up)
 
-    canvas = tk.Canvas(root, highlightthickness=0)
+    canvas = tk.Canvas(root, bg=COLOR_BG, highlightthickness=0)
 
     outer_scrollbar = ttk.Scrollbar(
         root,
@@ -365,7 +538,7 @@ def start_dashboard(employee_id, username):
         command=canvas.yview
     )
 
-    main_frame = tk.Frame(canvas)
+    main_frame = tk.Frame(canvas, bg=COLOR_BG)
 
     main_frame.bind(
         "<Configure>",
@@ -399,7 +572,9 @@ def start_dashboard(employee_id, username):
     tk.Label(
         main_frame,
         text="STAFFSYNC",
-        font=("Arial", 26, "bold")
+        font=FONT_TITLE,
+        bg=COLOR_BG,
+        fg=COLOR_TEXT
     ).pack(pady=(15, 5))
 
     # WELCOME
@@ -407,18 +582,22 @@ def start_dashboard(employee_id, username):
     tk.Label(
         main_frame,
         text=f"Welcome, {employee['name']}",
-        font=("Arial", 18)
+        font=FONT_WELCOME,
+        bg=COLOR_BG,
+        fg=COLOR_TEXT
     ).pack(pady=5)
 
     tk.Label(
         main_frame,
         text="Employee Dashboard",
-        font=("Arial", 12)
+        font=FONT_SUBTITLE,
+        bg=COLOR_BG,
+        fg=COLOR_MUTED
     ).pack(pady=5)
 
     # PROFILE
  
-    profile_frame = tk.LabelFrame(
+    profile_frame = styled_labelframe(
         main_frame,
         text="My Profile",
         padx=30,
@@ -436,7 +615,9 @@ def start_dashboard(employee_id, username):
     tk.Label(
         profile_frame,
         text="Employee ID:",
-        font=("Arial", 11, "bold")
+        font=FONT_LABEL_BOLD,
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT
     ).grid(
         row=0,
         column=0,
@@ -446,7 +627,9 @@ def start_dashboard(employee_id, username):
 
     tk.Label(
         profile_frame,
-        text=employee["employee_id"]
+        text=employee["employee_id"],
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT
     ).grid(
         row=0,
         column=1,
@@ -460,7 +643,9 @@ def start_dashboard(employee_id, username):
     tk.Label(
         profile_frame,
         text="Full Name:",
-        font=("Arial", 11, "bold")
+        font=FONT_LABEL_BOLD,
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT
     ).grid(
         row=1,
         column=0,
@@ -470,7 +655,9 @@ def start_dashboard(employee_id, username):
 
     tk.Label(
         profile_frame,
-        text=employee["name"]
+        text=employee["name"],
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT
     ).grid(
         row=1,
         column=1,
@@ -484,7 +671,9 @@ def start_dashboard(employee_id, username):
     tk.Label(
         profile_frame,
         text="Department:",
-        font=("Arial", 11, "bold")
+        font=FONT_LABEL_BOLD,
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT
     ).grid(
         row=2,
         column=0,
@@ -494,7 +683,9 @@ def start_dashboard(employee_id, username):
 
     tk.Label(
         profile_frame,
-        text=employee["department"]
+        text=employee["department"],
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT
     ).grid(
         row=2,
         column=1,
@@ -508,7 +699,9 @@ def start_dashboard(employee_id, username):
     tk.Label(
         profile_frame,
         text="Salary:",
-        font=("Arial", 11, "bold")
+        font=FONT_LABEL_BOLD,
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT
     ).grid(
         row=3,
         column=0,
@@ -518,7 +711,9 @@ def start_dashboard(employee_id, username):
 
     tk.Label(
         profile_frame,
-        text=employee["salary"]
+        text=employee["salary"],
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT
     ).grid(
         row=3,
         column=1,
@@ -532,7 +727,9 @@ def start_dashboard(employee_id, username):
     tk.Label(
         profile_frame,
         text="Status:",
-        font=("Arial", 11, "bold")
+        font=FONT_LABEL_BOLD,
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT
     ).grid(
         row=4,
         column=0,
@@ -542,7 +739,9 @@ def start_dashboard(employee_id, username):
 
     tk.Label(
         profile_frame,
-        text=employee["status"]
+        text=employee["status"],
+        bg=COLOR_CARD,
+        fg=COLOR_TEXT
     ).grid(
         row=4,
         column=1,
@@ -553,16 +752,20 @@ def start_dashboard(employee_id, username):
 
     # BUTTONS
 
-    button_frame = tk.Frame(main_frame)
+    button_frame = tk.Frame(main_frame, bg=COLOR_BG)
 
     button_frame.pack(pady=6)
 
-    change_password_button = tk.Button(
+    change_password_button = styled_button(
         button_frame,
         text="Change Password",
-        width=20,
-        command=open_change_password
+        command=open_change_password,
+        bg=COLOR_NEUTRAL,
+        active_bg=COLOR_NEUTRAL_DARK,
+        width=20
     )
+
+    change_password_button.config(fg=COLOR_TEXT, activeforeground=COLOR_TEXT)
 
     change_password_button.grid(
         row=0,
@@ -570,11 +773,13 @@ def start_dashboard(employee_id, username):
         padx=5
     )
 
-    leave_button = tk.Button(
+    leave_button = styled_button(
         button_frame,
         text="Request Leave",
-        width=20,
-        command=open_leave_request
+        command=open_leave_request,
+        bg=COLOR_PRIMARY,
+        active_bg=COLOR_PRIMARY_DARK,
+        width=20
     )
 
     leave_button.grid(
@@ -583,11 +788,13 @@ def start_dashboard(employee_id, username):
         padx=5
     )
 
-    logout_button = tk.Button(
+    logout_button = styled_button(
         button_frame,
         text="Logout",
-        width=20,
-        command=logout
+        command=logout,
+        bg=COLOR_DANGER,
+        active_bg=COLOR_DANGER_DARK,
+        width=20
     )
 
     logout_button.grid(
@@ -598,7 +805,7 @@ def start_dashboard(employee_id, username):
 
     # LEAVE REQUESTS
 
-    leave_frame = tk.LabelFrame(
+    leave_frame = styled_labelframe(
         main_frame,
         text="My Leave Requests",
         padx=10,
@@ -660,7 +867,7 @@ def start_dashboard(employee_id, username):
     
     # PAYMENT / SALARY
 
-    payment_frame = tk.LabelFrame(
+    payment_frame = styled_labelframe(
         main_frame,
         text="My Payments / Salary",
         padx=10,
