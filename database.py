@@ -238,7 +238,6 @@ def get_all_payments():
         payments_collection.find()
     )
 
-
 def get_employee_payments(employee_id):
     return list(
         payments_collection.find(

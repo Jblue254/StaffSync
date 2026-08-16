@@ -5,17 +5,22 @@ from database import (
     get_employee_by_id,
     change_password,
     create_leave_request,
-    get_employee_leave_requests
-)
+    get_employee_leave_requests,
+    get_employee_payments
 
+)
 
 def start_dashboard(employee_id, username):
 
     root = tk.Tk()
 
     root.title("StaffSync - Employee Dashboard")
-    root.geometry("850x700")
     root.resizable(True, True)
+
+    try:
+        root.state("zoomed")
+    except tk.TclError:
+        root.attributes("-zoomed", True)
 
     # LOGOUT
 
@@ -315,7 +320,24 @@ def start_dashboard(employee_id, username):
                     request.get("status", "")
                 )
             )
+    def load_payments():
 
+        for item in payment_table.get_children():
+            payment_table.delete(item)
+
+        payments = get_employee_payments(employee_id)
+
+        for payment in payments:
+
+            payment_table.insert(
+                "",
+                "end",
+                values=(
+                    payment.get("month", ""),
+                    payment.get("amount", ""),
+                    payment.get("status", "")
+                )
+            )
     # GET EMPLOYEE
 
     employee = get_employee_by_id(employee_id)
@@ -331,10 +353,51 @@ def start_dashboard(employee_id, username):
 
         return
 
+    # SCROLLABLE CONTAINER
+    # (root has a fixed size, so without this, content below the
+    # visible area - like the payment table - never shows up)
+
+    canvas = tk.Canvas(root, highlightthickness=0)
+
+    outer_scrollbar = ttk.Scrollbar(
+        root,
+        orient="vertical",
+        command=canvas.yview
+    )
+
+    main_frame = tk.Frame(canvas)
+
+    main_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
+
+    main_frame_window = canvas.create_window(
+        (0, 0),
+        window=main_frame,
+        anchor="nw"
+    )
+
+    canvas.bind(
+        "<Configure>",
+        lambda e: canvas.itemconfig(main_frame_window, width=e.width)
+    )
+
+    canvas.configure(yscrollcommand=outer_scrollbar.set)
+
+    canvas.pack(side="left", fill="both", expand=True)
+
+    outer_scrollbar.pack(side="right", fill="y")
+
+    def _on_mousewheel(event):
+        canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+    canvas.bind_all("<MouseWheel>", _on_mousewheel)
+
     # TITLE
 
     tk.Label(
-        root,
+        main_frame,
         text="STAFFSYNC",
         font=("Arial", 26, "bold")
     ).pack(pady=(15, 5))
@@ -342,13 +405,13 @@ def start_dashboard(employee_id, username):
     # WELCOME
 
     tk.Label(
-        root,
+        main_frame,
         text=f"Welcome, {employee['name']}",
         font=("Arial", 18)
     ).pack(pady=5)
 
     tk.Label(
-        root,
+        main_frame,
         text="Employee Dashboard",
         font=("Arial", 12)
     ).pack(pady=5)
@@ -356,7 +419,7 @@ def start_dashboard(employee_id, username):
     # PROFILE
  
     profile_frame = tk.LabelFrame(
-        root,
+        main_frame,
         text="My Profile",
         padx=30,
         pady=15
@@ -364,7 +427,7 @@ def start_dashboard(employee_id, username):
 
     profile_frame.pack(
         padx=40,
-        pady=15,
+        pady=8,
         fill="x"
     )
 
@@ -490,9 +553,9 @@ def start_dashboard(employee_id, username):
 
     # BUTTONS
 
-    button_frame = tk.Frame(root)
+    button_frame = tk.Frame(main_frame)
 
-    button_frame.pack(pady=10)
+    button_frame.pack(pady=6)
 
     change_password_button = tk.Button(
         button_frame,
@@ -536,7 +599,7 @@ def start_dashboard(employee_id, username):
     # LEAVE REQUESTS
 
     leave_frame = tk.LabelFrame(
-        root,
+        main_frame,
         text="My Leave Requests",
         padx=10,
         pady=10
@@ -545,8 +608,7 @@ def start_dashboard(employee_id, username):
     leave_frame.pack(
         padx=40,
         pady=10,
-        fill="both",
-        expand=True
+        fill="both"
     )
 
     columns = (
@@ -561,7 +623,7 @@ def start_dashboard(employee_id, username):
         leave_frame,
         columns=columns,
         show="headings",
-        height=6
+        height=4
     )
 
     for column in columns:
@@ -595,10 +657,76 @@ def start_dashboard(employee_id, username):
         fill="both",
         expand=True
     )
+    
+    # PAYMENT / SALARY
 
-    # LOAD REQUESTS
+    payment_frame = tk.LabelFrame(
+        main_frame,
+        text="My Payments / Salary",
+        padx=10,
+        pady=10
+    )
+
+    payment_frame.pack(
+        padx=40,
+        pady=10,
+        fill="both"
+    )
+
+    payment_columns = (
+        "Month",
+        "Amount",
+        "Status"
+    )
+
+    payment_table = ttk.Treeview(
+        payment_frame,
+        columns=payment_columns,
+        show="headings",
+        height=3
+    )
+
+    for column in payment_columns:
+
+        payment_table.heading(
+            column,
+            text=column
+        )
+
+        payment_table.column(
+            column,
+            width=150
+        )
+
+    payment_scrollbar = ttk.Scrollbar(
+        payment_frame,
+        orient="vertical",
+        command=payment_table.yview
+    )
+
+    payment_table.configure(
+        yscrollcommand=payment_scrollbar.set
+    )
+
+    payment_scrollbar.pack(
+        side="right",
+        fill="y"
+    )
+
+    payment_table.pack(
+        fill="both",
+        expand=True
+    )
+
+    
+
+    # LOAD LEAVE REQUESTS
 
     load_leave_requests()
+
+    # LOAD PAYMENTS
+
+    load_payments()
 
     # RUN
 

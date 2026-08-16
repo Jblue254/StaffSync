@@ -4,10 +4,29 @@ from tkinter import ttk, messagebox
 from database import (
     get_employee_statistics,
     get_all_leave_requests,
-    update_leave_status
+    update_leave_status,
+    get_all_employees,
+    create_payment
 )
 
 # FUNCTIONS
+
+def load_payment_employees():
+
+    employees = get_all_employees()
+
+    employee_ids = []
+
+    for employee in employees:
+
+        employee_ids.append(
+            employee["employee_id"]
+        )
+
+    payment_employee_combobox["values"] = employee_ids
+
+    if employee_ids:
+        payment_employee_combobox.current(0)
 
 def open_employee_management():
 
@@ -164,6 +183,73 @@ def deny_leave():
     "Success",
     "Leave request denied."
     )
+
+def record_payment():
+
+    employee_id = payment_employee_combobox.get()
+    month = payment_month_entry.get().strip()
+    amount = payment_amount_entry.get().strip()
+    status = payment_status_combobox.get()
+
+    if not employee_id or not month or not amount or not status:
+
+        messagebox.showwarning(
+            "Missing Information",
+            "Please fill in all payment information."
+        )
+
+        return
+
+    try:
+        amount = float(amount)
+    except ValueError:
+
+        messagebox.showerror(
+            "Invalid Amount",
+            "Please enter a valid payment amount."
+        )
+
+        return
+
+    # Find employee
+    employees = get_all_employees()
+
+    employee = None
+
+    for emp in employees:
+
+        if emp["employee_id"] == employee_id:
+            employee = emp
+            break
+
+    if employee is None:
+
+        messagebox.showerror(
+            "Error",
+            "Employee could not be found."
+        )
+
+        return
+
+    payment_data = {
+        "employee_id": employee["employee_id"],
+        "employee_name": employee["name"],
+        "month": month,
+        "amount": amount,
+        "status": status
+    }
+
+    create_payment(payment_data)
+
+    messagebox.showinfo(
+        "Success",
+        "Payment recorded successfully."
+    )
+
+    payment_month_entry.delete(0, tk.END)
+    payment_amount_entry.delete(0, tk.END)
+
+    payment_status_combobox.current(0)
 
 def refresh_statistics():
     statistics = get_employee_statistics()
@@ -358,6 +444,144 @@ manage_button.pack(
     padx=10
 )
 
+# PAYMENT MANAGEMENT
+
+payment_frame = tk.LabelFrame(
+    root,
+    text="Payment Management",
+    padx=15,
+    pady=10
+)
+
+payment_frame.pack(
+    padx=30,
+    pady=10,
+    fill="x"
+)
+
+# Employee
+
+tk.Label(
+    payment_frame,
+    text="Employee"
+).grid(
+    row=0,
+    column=0,
+    padx=5,
+    pady=5,
+    sticky="w"
+)
+
+payment_employee_combobox = ttk.Combobox(
+    payment_frame,
+    width=20,
+    state="readonly"
+)
+
+payment_employee_combobox.grid(
+    row=0,
+    column=1,
+    padx=5,
+    pady=5
+)
+
+# Month
+
+tk.Label(
+    payment_frame,
+    text="Month"
+).grid(
+    row=0,
+    column=2,
+    padx=5,
+    pady=5,
+    sticky="w"
+)
+
+payment_month_entry = tk.Entry(
+    payment_frame,
+    width=20
+)
+
+payment_month_entry.grid(
+    row=0,
+    column=3,
+    padx=5,
+    pady=5
+)
+
+# Amount
+
+tk.Label(
+    payment_frame,
+    text="Amount"
+).grid(
+    row=1,
+    column=0,
+    padx=5,
+    pady=5,
+    sticky="w"
+)
+
+payment_amount_entry = tk.Entry(
+    payment_frame,
+    width=20
+)
+
+payment_amount_entry.grid(
+    row=1,
+    column=1,
+    padx=5,
+    pady=5
+)
+
+# Status
+
+tk.Label(
+    payment_frame,
+    text="Status"
+).grid(
+    row=1,
+    column=2,
+    padx=5,
+    pady=5,
+    sticky="w"
+)
+
+payment_status_combobox = ttk.Combobox(
+    payment_frame,
+    values=[
+        "Paid",
+        "Pending"
+    ],
+    width=18,
+    state="readonly"
+)
+
+payment_status_combobox.grid(
+    row=1,
+    column=3,
+    padx=5,
+    pady=5
+)
+
+payment_status_combobox.current(0)
+
+# Record Payment Button
+
+record_payment_button = tk.Button(
+    payment_frame,
+    text="Record Payment",
+    width=20,
+    command=record_payment
+)
+
+record_payment_button.grid(
+    row=2,
+    column=0,
+    columnspan=4,
+    pady=10
+)
 # LEAVE REQUESTS
 
 leave_requests_frame = tk.LabelFrame(
@@ -505,6 +729,7 @@ logout_button.pack(
 
 load_leave_requests()
 
+load_payment_employees()
 # RUN
 
 if __name__ == "__main__":
