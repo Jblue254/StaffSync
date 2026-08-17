@@ -165,22 +165,6 @@ StaffSync/
 
 ---
 
-##  Admin Dashboard
-
-<!-- Add your admin dashboard screenshot here -->
-
-![Admin Dashboard](<img width="956" height="500" alt="image" src="https://github.com/user-attachments/assets/05aae488-61c8-444d-9e09-cd46761303b8" />)
-
----
-
-
-##  Employee Dashboard
-
-<!-- Add your employee dashboard screenshot here -->
-
-![Employee Dashboard](<img width="946" height="507" alt="image" src="https://github.com/user-attachments/assets/0ba52c9c-9958-4b86-b72c-27a417e1225d" />)
-
----
 
 
 #  Getting Started
