@@ -373,16 +373,11 @@ Then reference them in Markdown:
 
 ---
 
-#  Author
+## Author
 
-**Japheth Kiprono**
+## Japheth Kiprono
 
-GitHub:
+Software Developer
 
-[Jblue254/StaffSync](https://github.com/Jblue254/StaffSync)
-
----
-
-#  License
-
-This project was created for educational and development purposes.
+* GitHub: [jblue254](https://github.com/jblue254)
+* Email: [japhethkiprono2020@gmail.com](mailto:japhethkiprono2020@gmail.com)
