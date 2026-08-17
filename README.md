@@ -372,6 +372,10 @@ Then reference them in Markdown:
 ```
 
 ---
+## License
+
+This project is licensed under the MIT License.
+
 
 ## Author
 
